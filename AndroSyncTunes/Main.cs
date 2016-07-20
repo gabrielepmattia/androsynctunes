@@ -23,12 +23,11 @@ namespace AndroSyncTunes {
             uint cDevices = 1;
             deviceManager.GetDevices(null, ref cDevices);
             if (cDevices > 0) {
-                string[] deviceIDs = new string[cDevices];
+                string[] deviceIDs = new string[cDevices + 100];
                 deviceManager.GetDevices(deviceIDs, ref cDevices);
 
                 for (int ndxDevices = 0; ndxDevices < cDevices; ndxDevices++) {
-                    Console.WriteLine("Device[{0}]: {1}",
-                            ndxDevices + 1, deviceIDs[ndxDevices]);
+                    Console.WriteLine("Device[{0}]: {1}", ndxDevices, deviceIDs[ndxDevices]);
                 }
             } else {
                 Console.WriteLine("No WPD devices are present!");

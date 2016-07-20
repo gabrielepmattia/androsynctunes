@@ -2364,7 +2364,7 @@
                                                                                                   31 37 42 39 41 34 30 00 00 )                      // 17B9A40..
   .custom instance void [mscorlib]System.Runtime.InteropServices.InterfaceTypeAttribute::.ctor(int16) = ( 01 00 01 00 00 00 ) 
   .method public hidebysig newslot abstract virtual 
-          instance void  GetDevices([in][out] string[]  marshal([]) pPnPDeviceIDs,
+          instance void  GetDevices([in][out] string[]  marshal(lpwstr[]) pPnPDeviceIDs,
                                     [in][out] uint32& pcPnPDeviceIDs) runtime managed internalcall
   {
   } // end of method IPortableDeviceManager::GetDevices
