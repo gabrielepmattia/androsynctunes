@@ -167,6 +167,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\wpd-lib\wpd-lib\wpd-lib.csproj">
+      <Project>{7c07331d-5e7d-45b0-be40-510535606ffa}</Project>
+      <Name>wpd-lib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>C:\Windows\Microsoft.NET\Framework\v4.0.30319\ilasm.exe $(ProjectDir)PortableDeviceApiDis\Interop.PortableDeviceApiLib.il /dll /output=$(ProjectDir)obj\$(ConfigurationName)\Interop.PortableDeviceApiLib.dll</PostBuildEvent>

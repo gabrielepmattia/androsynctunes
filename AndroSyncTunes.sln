@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroSyncTunes", "AndroSyncTunes\AndroSyncTunes.csproj", "{78BC7C34-58D3-408F-83E9-4A2A98023515}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WPDInterfacing", "WPDInterfacing\WPDInterfacing.vcxproj", "{94C8F7F3-37FE-472C-87C1-DA68EC87D99D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wpd-lib", "wpd-lib\wpd-lib\wpd-lib.csproj", "{7C07331D-5E7D-45B0-BE40-510535606FFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,16 +29,16 @@ Global
 		{78BC7C34-58D3-408F-83E9-4A2A98023515}.Release|x64.Build.0 = Release|Any CPU
 		{78BC7C34-58D3-408F-83E9-4A2A98023515}.Release|x86.ActiveCfg = Release|Any CPU
 		{78BC7C34-58D3-408F-83E9-4A2A98023515}.Release|x86.Build.0 = Release|Any CPU
-		{94C8F7F3-37FE-472C-87C1-DA68EC87D99D}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{94C8F7F3-37FE-472C-87C1-DA68EC87D99D}.Debug|x64.ActiveCfg = Debug|x64
-		{94C8F7F3-37FE-472C-87C1-DA68EC87D99D}.Debug|x64.Build.0 = Debug|x64
-		{94C8F7F3-37FE-472C-87C1-DA68EC87D99D}.Debug|x86.ActiveCfg = Debug|Win32
-		{94C8F7F3-37FE-472C-87C1-DA68EC87D99D}.Debug|x86.Build.0 = Debug|Win32
-		{94C8F7F3-37FE-472C-87C1-DA68EC87D99D}.Release|Any CPU.ActiveCfg = Release|Win32
-		{94C8F7F3-37FE-472C-87C1-DA68EC87D99D}.Release|x64.ActiveCfg = Release|x64
-		{94C8F7F3-37FE-472C-87C1-DA68EC87D99D}.Release|x64.Build.0 = Release|x64
-		{94C8F7F3-37FE-472C-87C1-DA68EC87D99D}.Release|x86.ActiveCfg = Release|Win32
-		{94C8F7F3-37FE-472C-87C1-DA68EC87D99D}.Release|x86.Build.0 = Release|Win32
+		{7C07331D-5E7D-45B0-BE40-510535606FFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C07331D-5E7D-45B0-BE40-510535606FFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C07331D-5E7D-45B0-BE40-510535606FFA}.Debug|x64.ActiveCfg = Debug|x86
+		{7C07331D-5E7D-45B0-BE40-510535606FFA}.Debug|x86.ActiveCfg = Debug|x86
+		{7C07331D-5E7D-45B0-BE40-510535606FFA}.Debug|x86.Build.0 = Debug|x86
+		{7C07331D-5E7D-45B0-BE40-510535606FFA}.Release|Any CPU.ActiveCfg = Release|x86
+		{7C07331D-5E7D-45B0-BE40-510535606FFA}.Release|Any CPU.Build.0 = Release|x86
+		{7C07331D-5E7D-45B0-BE40-510535606FFA}.Release|x64.ActiveCfg = Release|x86
+		{7C07331D-5E7D-45B0-BE40-510535606FFA}.Release|x86.ActiveCfg = Release|x86
+		{7C07331D-5E7D-45B0-BE40-510535606FFA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
