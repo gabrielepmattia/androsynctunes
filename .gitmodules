@@ -1,0 +1,4 @@
+[submodule "wpd-lib"]
+	path = wpd-lib
+	url = git@github.com:gabry3795/wpd-lib.git
+
