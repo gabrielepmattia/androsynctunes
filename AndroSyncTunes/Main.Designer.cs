@@ -44,17 +44,24 @@ namespace AndroSyncTunes {
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.playlists_checkedlist = new System.Windows.Forms.CheckedListBox();
             this.other_options_groupbox = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.sync_groupbox = new System.Windows.Forms.GroupBox();
+            this.sync_checked_checkbox = new System.Windows.Forms.CheckBox();
+            this.sync_music_videos_checkbox = new System.Windows.Forms.CheckBox();
+            this.sync_memo_checkbox = new System.Windows.Forms.CheckBox();
             this.checked_artists_label = new System.Windows.Forms.Label();
             this.checked_albums_label = new System.Windows.Forms.Label();
             this.checked_playlist_label = new System.Windows.Forms.Label();
+            this.free_label = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.sync_mvideo_checkbox = new System.Windows.Forms.CheckBox();
+            this.sync_memo_checkboa = new System.Windows.Forms.CheckBox();
             this.select_device_groupbox.SuspendLayout();
             this.choose_sync_groupbox.SuspendLayout();
             this.song_chooser_groupbox.SuspendLayout();
             this.other_options_groupbox.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // device_list_combobox
@@ -88,6 +95,7 @@ namespace AndroSyncTunes {
             // 
             // select_device_groupbox
             // 
+            this.select_device_groupbox.Controls.Add(this.free_label);
             this.select_device_groupbox.Controls.Add(this.device_storage_list_combobox);
             this.select_device_groupbox.Controls.Add(this.storage_label);
             this.select_device_groupbox.Controls.Add(this.refresh_devices_button);
@@ -122,6 +130,7 @@ namespace AndroSyncTunes {
             // entire_library_radio
             // 
             this.entire_library_radio.AutoSize = true;
+            this.entire_library_radio.Checked = true;
             this.entire_library_radio.Location = new System.Drawing.Point(6, 19);
             this.entire_library_radio.Name = "entire_library_radio";
             this.entire_library_radio.Size = new System.Drawing.Size(206, 17);
@@ -137,7 +146,6 @@ namespace AndroSyncTunes {
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(119, 17);
             this.radioButton1.TabIndex = 5;
-            this.radioButton1.TabStop = true;
             this.radioButton1.Text = "Select items to sync";
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
@@ -247,9 +255,9 @@ namespace AndroSyncTunes {
             // 
             // other_options_groupbox
             // 
-            this.other_options_groupbox.Controls.Add(this.checkBox3);
-            this.other_options_groupbox.Controls.Add(this.checkBox2);
-            this.other_options_groupbox.Controls.Add(this.checkBox1);
+            this.other_options_groupbox.Controls.Add(this.sync_memo_checkbox);
+            this.other_options_groupbox.Controls.Add(this.sync_music_videos_checkbox);
+            this.other_options_groupbox.Controls.Add(this.sync_checked_checkbox);
             this.other_options_groupbox.Location = new System.Drawing.Point(12, 157);
             this.other_options_groupbox.Name = "other_options_groupbox";
             this.other_options_groupbox.Size = new System.Drawing.Size(257, 70);
@@ -257,44 +265,35 @@ namespace AndroSyncTunes {
             this.other_options_groupbox.TabStop = false;
             this.other_options_groupbox.Text = "4. Other options";
             // 
-            // checkBox1
+            // sync_checked_checkbox
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 19);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(148, 17);
-            this.checkBox1.TabIndex = 7;
-            this.checkBox1.Text = "Sync only checked songs";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.sync_checked_checkbox.AutoSize = true;
+            this.sync_checked_checkbox.Location = new System.Drawing.Point(6, 19);
+            this.sync_checked_checkbox.Name = "sync_checked_checkbox";
+            this.sync_checked_checkbox.Size = new System.Drawing.Size(148, 17);
+            this.sync_checked_checkbox.TabIndex = 7;
+            this.sync_checked_checkbox.Text = "Sync only checked songs";
+            this.sync_checked_checkbox.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // sync_music_videos_checkbox
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(6, 34);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(136, 17);
-            this.checkBox2.TabIndex = 8;
-            this.checkBox2.Text = "Sync also music videos";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.sync_music_videos_checkbox.AutoSize = true;
+            this.sync_music_videos_checkbox.Location = new System.Drawing.Point(6, 34);
+            this.sync_music_videos_checkbox.Name = "sync_music_videos_checkbox";
+            this.sync_music_videos_checkbox.Size = new System.Drawing.Size(136, 17);
+            this.sync_music_videos_checkbox.TabIndex = 8;
+            this.sync_music_videos_checkbox.Text = "Sync also music videos";
+            this.sync_music_videos_checkbox.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // sync_memo_checkbox
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(6, 49);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(137, 17);
-            this.checkBox3.TabIndex = 9;
-            this.checkBox3.Text = "Sync also voice memos";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // sync_groupbox
-            // 
-            this.sync_groupbox.Location = new System.Drawing.Point(275, 199);
-            this.sync_groupbox.Name = "sync_groupbox";
-            this.sync_groupbox.Size = new System.Drawing.Size(589, 71);
-            this.sync_groupbox.TabIndex = 7;
-            this.sync_groupbox.TabStop = false;
-            this.sync_groupbox.Text = "5. Sync!";
+            this.sync_memo_checkbox.AutoSize = true;
+            this.sync_memo_checkbox.Location = new System.Drawing.Point(6, 49);
+            this.sync_memo_checkbox.Name = "sync_memo_checkbox";
+            this.sync_memo_checkbox.Size = new System.Drawing.Size(137, 17);
+            this.sync_memo_checkbox.TabIndex = 9;
+            this.sync_memo_checkbox.Text = "Sync also voice memos";
+            this.sync_memo_checkbox.UseVisualStyleBackColor = true;
             // 
             // checked_artists_label
             // 
@@ -326,12 +325,77 @@ namespace AndroSyncTunes {
             this.checked_playlist_label.TabIndex = 11;
             this.checked_playlist_label.Text = "Checked items #no";
             // 
+            // free_label
+            // 
+            this.free_label.AutoSize = true;
+            this.free_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.free_label.Location = new System.Drawing.Point(205, 32);
+            this.free_label.Name = "free_label";
+            this.free_label.Size = new System.Drawing.Size(34, 12);
+            this.free_label.TabIndex = 5;
+            this.free_label.Text = "FREE";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(789, 200);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Sync";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Location = new System.Drawing.Point(0, 230);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(873, 22);
+            this.statusStrip1.TabIndex = 8;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
+            this.toolStripStatusLabel1.Text = "Ready";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(286, 204);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(121, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Selected tracks to sync:";
+            // 
+            // sync_mvideo_checkbox
+            // 
+            this.sync_mvideo_checkbox.AutoSize = true;
+            this.sync_mvideo_checkbox.Location = new System.Drawing.Point(6, 34);
+            this.sync_mvideo_checkbox.Name = "sync_mvideo_checkbox";
+            this.sync_mvideo_checkbox.Size = new System.Drawing.Size(136, 17);
+            this.sync_mvideo_checkbox.TabIndex = 8;
+            this.sync_mvideo_checkbox.Text = "Sync also music videos";
+            this.sync_mvideo_checkbox.UseVisualStyleBackColor = true;
+            // 
+            // sync_memo_checkboa
+            // 
+            this.sync_memo_checkboa.AutoSize = true;
+            this.sync_memo_checkboa.Location = new System.Drawing.Point(6, 49);
+            this.sync_memo_checkboa.Name = "sync_memo_checkboa";
+            this.sync_memo_checkboa.Size = new System.Drawing.Size(137, 17);
+            this.sync_memo_checkboa.TabIndex = 9;
+            this.sync_memo_checkboa.Text = "Sync also voice memos";
+            this.sync_memo_checkboa.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(873, 283);
-            this.Controls.Add(this.sync_groupbox);
+            this.ClientSize = new System.Drawing.Size(873, 252);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.other_options_groupbox);
             this.Controls.Add(this.song_chooser_groupbox);
             this.Controls.Add(this.choose_sync_groupbox);
@@ -347,7 +411,10 @@ namespace AndroSyncTunes {
             this.song_chooser_groupbox.PerformLayout();
             this.other_options_groupbox.ResumeLayout(false);
             this.other_options_groupbox.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -372,13 +439,19 @@ namespace AndroSyncTunes {
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.CheckedListBox albums_checkedlist;
         private System.Windows.Forms.GroupBox other_options_groupbox;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.GroupBox sync_groupbox;
+        private System.Windows.Forms.CheckBox sync_checked_checkbox;
+        private System.Windows.Forms.CheckBox sync_music_videos_checkbox;
+        private System.Windows.Forms.CheckBox sync_memo_checkbox;
         private System.Windows.Forms.Label checked_playlist_label;
         private System.Windows.Forms.Label checked_albums_label;
         private System.Windows.Forms.Label checked_artists_label;
+        private System.Windows.Forms.Label free_label;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox sync_mvideo_checkbox;
+        private System.Windows.Forms.CheckBox sync_memo_checkboa;
     }
 }
 

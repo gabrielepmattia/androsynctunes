@@ -10,7 +10,6 @@ using System.IO;
 using System.Windows.Forms;
 
 using PortableDeviceApiLib;
-using PortableDeviceConstants;
 using WindowsPortableDevicesLib.Domain;
 using WindowsPortableDevicesLib;
 using iTunesAdminLib;
@@ -22,7 +21,8 @@ namespace AndroSyncTunes {
         private iTunesApp o_iTunes;
         // Lists
         iLibrary library;
-
+        List<IITTrack> tracks_to_sync;
+        Devices devices;
 
         public Main() {
             InitializeComponent();
@@ -30,6 +30,7 @@ namespace AndroSyncTunes {
             this.o_iTunes = new iTunesApp();
             List<String> library_albums = new List<String>();
             List<String> library_artists = new List<String>();
+            this.tracks_to_sync = new List<IITTrack>();
             // Get the library
             IITLibraryPlaylist itunes_library_playlist = o_iTunes.LibraryPlaylist;
             // Generate Albums and Artist lists
@@ -47,6 +48,7 @@ namespace AndroSyncTunes {
             updateAlbumsCheckedList();
             updateArtistCheckedList();
             updatePlaylistsCheckedList();
+            this.devices = new Devices();
         }
 
         private void Main_Load(object sender, EventArgs e) {
@@ -80,11 +82,6 @@ namespace AndroSyncTunes {
                 }
             }
             */
-
-
-
-            //Console.Write("Press any key to continue . . . ");
-            //Console.ReadKey(true);
         }
 
         public static void DisplayObject(PortableDeviceObject portableDeviceObject) {
@@ -178,16 +175,20 @@ namespace AndroSyncTunes {
             if (devices.Count == 0) {
 
             } else {
-
                 int i = 0;
                 foreach (WindowsPortableDevice device in devices) {
                     device.Connect();
                     device_list_combobox.Items.Insert(i++, device.DeviceModel);
+                    PortableDeviceFolder device_contents = device.GetContents();
+                    foreach (PortableDeviceFolder item in device_contents.Files) {
+                        device_storage_list_combobox.Items.Add(item.Name);
+                    }
                     device.Disconnect();
                 }
-
             }
+
             if (device_list_combobox.Items.Count > 0) device_list_combobox.SelectedIndex = 0;
+            if (device_storage_list_combobox.Items.Count > 0) device_storage_list_combobox.SelectedIndex = 0;
         }
 
         private void artists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
@@ -232,8 +233,55 @@ namespace AndroSyncTunes {
             }
         }
 
+        private void button1_Click(object sender, EventArgs e) {
+            // Calculate tracks to sync
+            tracks_to_sync.Clear();
 
+            foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
+                if (track.Kind == ITTrackKind.ITTrackKindFile && track.Enabled == true) {
+                    tracks_to_sync.Add(track);
+                }
+            }
 
+            // Check from Playlists
+            /*
+            foreach (String playlist_checked_string in playlists_checkedlist.Items) {
+                foreach (IITPlaylist playlist_o in o_iTunes.LibrarySource.Playlists) {
+                    if (playlist_o.Name == playlist_checked_string) {
+                        foreach (IITTrack track in playlist_o.Tracks) {
+                            tracks_to_sync.Add(track);
+                            Console.WriteLine(track.Name);
+                        }
+                    }
+                    break;
+                }
+            }
+            */
+            /*
+            foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
+                // Check from Artists
+
+                // Check from Albums
+
+                // Check from Playlists
+
+            }
+            */
+            label1.Text = tracks_to_sync.Count.ToString();
+            label1.Refresh();
+
+            WindowsPortableDevice selected_device = devices.DevicesList[device_list_combobox.SelectedIndex];
+            selected_device.Connect();
+            var contents = selected_device.GetContents().Files;
+            String music_folder = devices.DevicesList[device_list_combobox.SelectedIndex].CreateFolder(devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].PersistentId, "Music");
+            selected_device.Disconnect();
+            foreach (IITTrack track in tracks_to_sync) {
+                selected_device.Connect();
+                selected_device.TransferContentToDevice(((IITFileOrCDTrack)track).Location, music_folder);
+                selected_device.Disconnect();
+            }
+
+        }
     }
 
 
