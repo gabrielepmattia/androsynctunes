@@ -13,12 +13,40 @@ using PortableDeviceApiLib;
 using PortableDeviceConstants;
 using WindowsPortableDevicesLib.Domain;
 using WindowsPortableDevicesLib;
+using iTunesAdminLib;
+using iTunesLib;
 using System.Diagnostics;
 
 namespace AndroSyncTunes {
     public partial class Main : Form {
+        private iTunesApp o_iTunes;
+        // Lists
+        iLibrary library;
+
+
         public Main() {
             InitializeComponent();
+            // Initialize global variables
+            this.o_iTunes = new iTunesApp();
+            List<String> library_albums = new List<String>();
+            List<String> library_artists = new List<String>();
+            // Get the library
+            IITLibraryPlaylist itunes_library_playlist = o_iTunes.LibraryPlaylist;
+            // Generate Albums and Artist lists
+            foreach (IITTrack track in itunes_library_playlist.Tracks) {
+                //Console.WriteLine(track.Name);
+                //Console.WriteLine("\tplaylistID::" + track.playlistID);
+                //Console.WriteLine("\tsourceID::" + track.sourceID);
+                //Console.WriteLine("\ttrackID::" + track.trackID);
+                //Console.WriteLine("\tTrackDatabaseID::" + track.TrackDatabaseID);
+                //Console.WriteLine("\tEnabled::" + track.Enabled);
+                if (!library_albums.Contains(track.Album)) library_albums.Add(track.Album);
+                if (!library_artists.Contains(track.Artist)) library_artists.Add(track.Artist);
+            }
+            this.library = new iLibrary(library_albums, library_artists);
+            updateAlbumsCheckedList();
+            updateArtistCheckedList();
+            updatePlaylistsCheckedList();
         }
 
         private void Main_Load(object sender, EventArgs e) {
@@ -157,9 +185,56 @@ namespace AndroSyncTunes {
                     device_list_combobox.Items.Insert(i++, device.DeviceModel);
                     device.Disconnect();
                 }
-                
+
             }
-            device_list_combobox.SelectedIndex = 0;
+            if (device_list_combobox.Items.Count > 0) device_list_combobox.SelectedIndex = 0;
         }
+
+        private void artists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
+            //checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString();
+        }
+
+        private void albums_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
+            checked_albums_label.Text = albums_checkedlist.CheckedItems.Count.ToString();
+        }
+
+        private void playlists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
+            checked_playlist_label.Text = playlists_checkedlist.CheckedItems.Count.ToString();
+        }
+
+        private void artists_checkedlist_SelectedIndexChanged(object sender, EventArgs e) {
+            //checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString();
+        }
+
+        private void artists_checkedlist_MouseClick(object sender, MouseEventArgs e) {
+            checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString();
+        }
+
+        // ======================== GUI Methods ========================
+        private void updateArtistCheckedList() {
+            foreach (String artist in library.Artists) {
+                if (artist == null) artists_checkedlist.Items.Add("Unknown Album");
+                else artists_checkedlist.Items.Add(artist);
+            }
+        }
+
+        private void updateAlbumsCheckedList() {
+            foreach (String album in library.Albums) {
+                if (album == null) albums_checkedlist.Items.Add("Unknown Album");
+                else albums_checkedlist.Items.Add(album);
+            }
+        }
+
+        private void updatePlaylistsCheckedList() {
+            playlists_checkedlist.Items.Clear();
+            foreach (IITPlaylist playlist in o_iTunes.LibrarySource.Playlists) {
+                playlists_checkedlist.Items.Add(playlist.Name);
+            }
+        }
+
+
+
     }
+
+
 }
