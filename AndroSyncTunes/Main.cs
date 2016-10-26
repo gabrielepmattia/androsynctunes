@@ -290,7 +290,21 @@ namespace AndroSyncTunes {
                     foreach (IITTrack track in library.Playlists.ElementAt(selected_playlist).Value.Tracks) tracks_to_sync.Add(track);
                 }
                 // Add form the Albums
+                foreach (String album in albums_checkedlist.CheckedItems) {
+                    foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
+                        if (track.Album == null || track.Kind != ITTrackKind.ITTrackKindFile) continue;
+                        if (sync_checked_checkbox.Checked && !track.Enabled) continue;
+                        if (track.Album.Equals(album) && !tracks_to_sync.Contains(track)) tracks_to_sync.Add(track);
+                    }
+                }
                 // Add from the Artists
+                foreach (String artist in albums_checkedlist.CheckedItems) {
+                    foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
+                        if (track.Artist == null || track.Kind != ITTrackKind.ITTrackKindFile) continue;
+                        if (sync_checked_checkbox.Checked && !track.Enabled) continue;
+                        if (track.Artist.Equals(artist) && !tracks_to_sync.Contains(track)) tracks_to_sync.Add(track);
+                    }
+                }
             }
             label1.Text = tracks_to_sync.Count.ToString();
             label1.Refresh();
