@@ -20,9 +20,8 @@ namespace AndroSyncTunes {
     public partial class Main : Form {
         private iTunesApp o_iTunes;
         // Lists
-        iLibrary library;
+        MusicLibrary library;
         List<IITTrack> tracks_to_sync;
-        Devices devices;
 
         public Main() {
             InitializeComponent();
@@ -44,11 +43,10 @@ namespace AndroSyncTunes {
                 if (!library_albums.Contains(track.Album)) library_albums.Add(track.Album);
                 if (!library_artists.Contains(track.Artist)) library_artists.Add(track.Artist);
             }
-            this.library = new iLibrary(library_albums, library_artists);
+            this.library = new MusicLibrary(library_albums, library_artists, o_iTunes.LibrarySource.Playlists);
             updateAlbumsCheckedList();
             updateArtistCheckedList();
             updatePlaylistsCheckedList();
-            this.devices = new Devices();
         }
 
         private void Main_Load(object sender, EventArgs e) {
@@ -228,20 +226,13 @@ namespace AndroSyncTunes {
 
         private void updatePlaylistsCheckedList() {
             playlists_checkedlist.Items.Clear();
-            foreach (IITPlaylist playlist in o_iTunes.LibrarySource.Playlists) {
-                playlists_checkedlist.Items.Add(playlist.Name);
+            foreach (KeyValuePair<String, IITPlaylist> playlist_pair in library.Playlists) {
+                playlists_checkedlist.Items.Add(playlist_pair.Key);
             }
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            // Calculate tracks to sync
-            tracks_to_sync.Clear();
 
-            foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
-                if (track.Kind == ITTrackKind.ITTrackKindFile && track.Enabled == true) {
-                    tracks_to_sync.Add(track);
-                }
-            }
 
             // Check from Playlists
             /*
@@ -269,7 +260,7 @@ namespace AndroSyncTunes {
             */
             label1.Text = tracks_to_sync.Count.ToString();
             label1.Refresh();
-
+            /*
             WindowsPortableDevice selected_device = devices.DevicesList[device_list_combobox.SelectedIndex];
             selected_device.Connect();
             var contents = selected_device.GetContents().Files;
@@ -279,10 +270,30 @@ namespace AndroSyncTunes {
                 selected_device.Connect();
                 selected_device.TransferContentToDevice(((IITFileOrCDTrack)track).Location, music_folder);
                 selected_device.Disconnect();
-            }
+                */
+        }
 
+        private void sync_button_Click(object sender, EventArgs e) {
+            tracks_to_sync.Clear();
+            // Calculate the tracks to sync
+            // Check if entire library is selected
+            if (entire_library_radio.Checked == true) {
+                foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
+                    if (track.Kind == ITTrackKind.ITTrackKindFile && track.Enabled == true) {
+                        tracks_to_sync.Add(track);
+                    }
+                }
+            } else {
+                // Add from the Playlists
+                //foreach(KeyValuePair<String, IITPlaylist> playlist_pair in library.Playlists) {
+                foreach (int selected_playlist in playlists_checkedlist.CheckedIndices) {
+                    foreach (IITTrack track in library.Playlists.ElementAt(selected_playlist).Value.Tracks) tracks_to_sync.Add(track);
+                }
+                // Add form the Albums
+                // Add from the Artists
+            }
+            label1.Text = tracks_to_sync.Count.ToString();
+            label1.Refresh();
         }
     }
-
-
 }

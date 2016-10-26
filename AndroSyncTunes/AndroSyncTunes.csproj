@@ -68,13 +68,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Devices.cs" />
-    <Compile Include="iLibrary.cs" />
+    <Compile Include="iLibraryUtils.cs" />
+    <Compile Include="MusicLibrary.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="MTPUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Main.resx">
