@@ -12,12 +12,14 @@ using System.Windows.Forms;
 using PortableDeviceApiLib;
 using WindowsPortableDevicesLib.Domain;
 using WindowsPortableDevicesLib;
+
 using iTunesAdminLib;
 using iTunesLib;
 using System.Diagnostics;
 
 namespace AndroSyncTunes {
     public partial class Main : Form {
+        public static String UNKNOWN_STRING = "Unknown";
         private iTunesApp o_iTunes;
         // Lists
         MusicLibrary library;
@@ -212,14 +214,14 @@ namespace AndroSyncTunes {
         // ======================== GUI Methods ========================
         private void updateArtistCheckedList() {
             foreach (String artist in library.Artists) {
-                if (artist == null) artists_checkedlist.Items.Add("Unknown Album");
+                if (artist == null) artists_checkedlist.Items.Add(UNKNOWN_STRING);
                 else artists_checkedlist.Items.Add(artist);
             }
         }
 
         private void updateAlbumsCheckedList() {
             foreach (String album in library.Albums) {
-                if (album == null) albums_checkedlist.Items.Add("Unknown Album");
+                if (album == null) albums_checkedlist.Items.Add(UNKNOWN_STRING);
                 else albums_checkedlist.Items.Add(album);
             }
         }
@@ -292,7 +294,7 @@ namespace AndroSyncTunes {
                 // Add form the Albums
                 foreach (String album in albums_checkedlist.CheckedItems) {
                     foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
-                        if (track.Album == null || track.Kind != ITTrackKind.ITTrackKindFile) continue;
+                        if ((track.Album == null && album != UNKNOWN_STRING) || track.Kind != ITTrackKind.ITTrackKindFile) continue;
                         if (sync_checked_checkbox.Checked && !track.Enabled) continue;
                         if (track.Album.Equals(album) && !tracks_to_sync.Contains(track)) tracks_to_sync.Add(track);
                     }
@@ -300,7 +302,7 @@ namespace AndroSyncTunes {
                 // Add from the Artists
                 foreach (String artist in albums_checkedlist.CheckedItems) {
                     foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
-                        if (track.Artist == null || track.Kind != ITTrackKind.ITTrackKindFile) continue;
+                        if ((track.Artist == null && artist != UNKNOWN_STRING) || track.Kind != ITTrackKind.ITTrackKindFile) continue;
                         if (sync_checked_checkbox.Checked && !track.Enabled) continue;
                         if (track.Artist.Equals(artist) && !tracks_to_sync.Contains(track)) tracks_to_sync.Add(track);
                     }
@@ -308,6 +310,8 @@ namespace AndroSyncTunes {
             }
             label1.Text = tracks_to_sync.Count.ToString();
             label1.Refresh();
+
+            // Start syncing
         }
     }
 }
