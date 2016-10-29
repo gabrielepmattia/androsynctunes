@@ -16,10 +16,9 @@ namespace AndroSyncTunes {
         /// <param name="createIfNotExists"></param>
         /// <param name="device"></param>
         /// <returns></returns>
-        public static String checkIfFileExists(PortableDeviceFolder root, String fileName) {
-            foreach (PortableDeviceFolder subfolder in root.Files) {
-                if (subfolder.Name == fileName) return subfolder.PersistentId;
-            }
+        public static String checkIfFileExists(PortableDeviceObject root, String fileName, WindowsPortableDevice device) {
+            PortableDeviceFolder root_folder = device.GetContents((PortableDeviceFolder)root);
+            foreach (PortableDeviceObject item in root_folder.Files) if (item.Name == fileName) return item.PersistentId;
             return null;
         }
 
@@ -29,10 +28,38 @@ namespace AndroSyncTunes {
         /// <param name="root"></param>
         /// <param name="createIfNotExists"></param>
         /// <returns>The persistent ID of the folder if exsist (Or created)</returns>
-        public static String checkIfFolderExists(PortableDeviceFolder root, String folderName, bool createIfNotExists, WindowsPortableDevice device) {
-            checkIfFileExists(root, folderName);
+        public static String checkIfFolderExists(PortableDeviceObject root, String folderName, bool createIfNotExists, WindowsPortableDevice device) {
+            String check = checkIfFileExists((PortableDeviceFolder)root, folderName, device);
+            if (check != null) return check;
+            Console.WriteLine("Passing to create folder :: " + root.PersistentId + "," + folderName);
             if (createIfNotExists) return device.CreateFolder(root.PersistentId, folderName);
             return null;
         }
+
+        public static void DisplayObject(PortableDeviceObject portableDeviceObject) {
+            Console.WriteLine(portableDeviceObject.Name);
+            if (portableDeviceObject is PortableDeviceFolder) {
+                DisplayFolderContents((PortableDeviceFolder)portableDeviceObject);
+            }
+        }
+
+        public static void DisplayFolderContents(PortableDeviceFolder folder) {
+            foreach (var item in folder.Files) {
+                Console.WriteLine(item.Name);
+                if (item is PortableDeviceFolder) {
+                    DisplayFolderContents((PortableDeviceFolder)item);
+                }
+            }
+        }
+        /*
+        public static void _CheckIfFolderExist(PortableDeviceFolder folder) {
+            foreach (var item in folder.Files) {
+                Console.WriteLine(item.Name);
+                if (item is PortableDeviceFolder) {
+                    CheckIfFolderExist((PortableDeviceFolder)item);
+                }
+            }
+        }
+        */
     }
 }

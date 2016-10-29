@@ -21,6 +21,7 @@ namespace AndroSyncTunes {
     public partial class Main : Form {
         public static String UNKNOWN_STRING = "Unknown";
         private iTunesApp o_iTunes;
+        private Devices devices;
         // Lists
         MusicLibrary library;
         List<IITTrack> tracks_to_sync;
@@ -49,6 +50,8 @@ namespace AndroSyncTunes {
             updateAlbumsCheckedList();
             updateArtistCheckedList();
             updatePlaylistsCheckedList();
+
+            this.devices = new Devices();
         }
 
         private void Main_Load(object sender, EventArgs e) {
@@ -84,21 +87,6 @@ namespace AndroSyncTunes {
             */
         }
 
-        public static void DisplayObject(PortableDeviceObject portableDeviceObject) {
-            Console.WriteLine(portableDeviceObject.Name);
-            if (portableDeviceObject is PortableDeviceFolder) {
-                DisplayFolderContents((PortableDeviceFolder)portableDeviceObject);
-            }
-        }
-
-        public static void DisplayFolderContents(PortableDeviceFolder folder) {
-            foreach (var item in folder.Files) {
-                Console.WriteLine(item.Id);
-                if (item is PortableDeviceFolder) {
-                    DisplayFolderContents((PortableDeviceFolder)item);
-                }
-            }
-        }
 
         private void Main_Load_old(object sender, EventArgs e) {
             /*
@@ -169,6 +157,8 @@ namespace AndroSyncTunes {
 
         private void refresh_devices_button_Click(object sender, EventArgs e) {
             device_list_combobox.Items.Clear();
+            device_storage_list_combobox.Items.Clear();
+            /*
             StandardWindowsPortableDeviceService devices_service = new StandardWindowsPortableDeviceService();
             IList<WindowsPortableDevice> devices = devices_service.Devices;
 
@@ -185,6 +175,21 @@ namespace AndroSyncTunes {
                     }
                     device.Disconnect();
                 }
+            }
+            */
+
+            this.devices = new Devices();
+            Console.WriteLine("============== DEVICES DEBUG ====================");
+            Console.WriteLine("=> Devices");
+            int ii = 0;
+            foreach (WindowsPortableDevice d in this.devices.DevicesList) {
+                device_list_combobox.Items.Add(d.DeviceModel);
+                Console.WriteLine("==> " + d.DeviceModel);
+                foreach (KeyValuePair<String, PortableDeviceObject> k in this.devices.DevicesResourcesList[ii]) {
+                    device_storage_list_combobox.Items.Add(k.Key);
+                    Console.WriteLine("===> " + k.Key + " value " + k.Value.PersistentId);
+                }
+                ii++;
             }
 
             if (device_list_combobox.Items.Count > 0) device_list_combobox.SelectedIndex = 0;
@@ -312,6 +317,18 @@ namespace AndroSyncTunes {
             label1.Refresh();
 
             // Start syncing
+            // Connect to device
+            devices.DevicesList[device_list_combobox.SelectedIndex].Connect();
+            Console.WriteLine("============ DEBUGGING SYNC ============");
+            Console.WriteLine("RootID:: " + this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value);
+            Console.WriteLine("DevObj:: " + this.devices.DevicesList[device_list_combobox.SelectedIndex].DeviceModel);
+            Console.WriteLine("DevList:: " + this.devices.DevicesList.ToArray().ToString());
+            Console.WriteLine("RootIs:: " + this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value);
+            Console.WriteLine("RootNameIs:: " + this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value.Name);
+            Console.WriteLine("Result of check :: " + MTPUtils.checkIfFolderExists(this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value, "Musica", true, this.devices.DevicesList[device_list_combobox.SelectedIndex]));
+            // Retrieve desired content
+            //PortableDeviceObject storage_folder = devices.DevicesList[device_list_combobox.SelectedIndex].GetContents().Files[device_storage_list_combobox.SelectedIndex];
+            devices.DevicesList[device_list_combobox.SelectedIndex].Disconnect();
         }
     }
 }
