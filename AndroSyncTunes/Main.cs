@@ -320,15 +320,15 @@ namespace AndroSyncTunes {
             // Connect to device
             WindowsPortableDevice device = this.devices.DevicesList[device_list_combobox.SelectedIndex];
             PortableDeviceObject storage = this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value;
+
             device.Connect();
-            //Console.WriteLine("============ DEBUGGING SYNC ============");
-            //Console.WriteLine("RootNameIs:: " + this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value.Name);
             // Get the root folder obj
-            PortableDeviceFolder root_folder_obj = MTPUtils.checkIfFolderExists(device, storage, "Musica", true);
+            PortableDeviceFolder root_folder_obj = MTPUtils.checkIfFolderExists(device, storage, "Musik", true);
             Console.WriteLine("[Main] root_folder_pid :: " + root_folder_obj.Id + " root_folder_obj :: " + root_folder_obj);
-            // Now enter in that folder and copy files
-            MTPiLibraryUtils.copyTrackToGivenRootWithArtistAlbumScheme(device, (PortableDeviceFolder)root_folder_obj, tracks_to_sync[0]);
-            // Retrieve desired content
+            foreach (IITTrack track in tracks_to_sync) {
+                // Now enter in that folder and copy files
+                MTPiLibraryUtils.copyTrackToGivenRootWithArtistAlbumScheme(device, (PortableDeviceFolder)root_folder_obj, track);
+            }
             device.Disconnect();
         }
     }

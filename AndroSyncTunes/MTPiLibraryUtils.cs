@@ -23,14 +23,13 @@ namespace AndroSyncTunes {
         public static void copyTrackToGivenRootWithArtistAlbumScheme(WindowsPortableDevice device, PortableDeviceFolder root, IITTrack track) {
             // Get/Create artist folder
             PortableDeviceFolder artist_folder = MTPUtils.checkIfFolderExists(device, root, track.Artist, true);
-            Console.WriteLine("(copyTrackToGivenRootWithArtistAlbumScheme) artist_folder_id :: " + artist_folder.Id);
             // Get/Create album folder
             PortableDeviceFolder album_folder = MTPUtils.checkIfFolderExists(device, artist_folder, track.Album, true);
-            Console.WriteLine("(copyTrackToGivenRootWithArtistAlbumScheme) album_folder_id :: " + album_folder.Id);
             // Start the transfer
-            device.TransferContentToDevice(((IITFileOrCDTrack)track).Location, album_folder.Id);
-            Console.WriteLine("(copyTrackToGivenRootWithArtistAlbumScheme) copying (IITFileOrCDTrack)track).Location :: " + ((IITFileOrCDTrack)track).Location);
-    
+            if (MTPUtils.checkIfFileExists(device, album_folder, System.IO.Path.GetFileName(((IITFileOrCDTrack)track).Location)) == null) {
+                Console.WriteLine("(copyTrackToGivenRootWithArtistAlbumScheme) copying :: " + System.IO.Path.GetFileName(((IITFileOrCDTrack)track).Location));
+                device.TransferContentToDevice(((IITFileOrCDTrack)track).Location, album_folder.Id);
+            } else Console.WriteLine("(copyTrackToGivenRootWithArtistAlbumScheme) File exists :: " + System.IO.Path.GetFileName(((IITFileOrCDTrack)track).Location));
         }
     }
 }

@@ -12,28 +12,38 @@ namespace AndroSyncTunes {
     /// </summary>
     class MTPUtils {
         /// <summary>
-        /// Check if file exists only in the root given
+        /// Check if file exists only in the root given and return the file object
         /// </summary>
-        /// <param name="root"></param>
-        /// <param name="folderName"></param>
-        /// <param name="createIfNotExists"></param>
         /// <param name="device"></param>
-        /// <returns></returns>
-        public static PortableDeviceObject checkIfFileExists(WindowsPortableDevice device, PortableDeviceObject root, String fileName) {
+        /// <param name="root"></param>
+        /// <param name="fileName"></param>
+        /// <returns>Found file object</returns>
+        public static PortableDeviceFile checkIfFileExists(WindowsPortableDevice device, PortableDeviceObject root, String fileName) {
             PortableDeviceFolder root_folder = device.GetContents((PortableDeviceFolder)root);
-            foreach (PortableDeviceObject item in root_folder.Files) if (item.Name == fileName) return item;
+            foreach (PortableDeviceObject item in root_folder.Files) {
+                if (item is PortableDeviceFile) {
+                    PortableDeviceFile item_file = (PortableDeviceFile)item;
+                    if (item_file.OriginalFileName == fileName) return item_file;
+                }             
+            }
             return null;
         }
 
         /// <summary>
-        /// Check if folder exists only in the given root (not recursive)
+        /// Check if folder exists only in the given root (not recursive) and return the folder object.
         /// </summary>
+        /// <param name="device"></param>
         /// <param name="root"></param>
+        /// <param name="folderName"></param>
         /// <param name="createIfNotExists"></param>
-        /// <returns>The persistent ID of the folder if exists (Or created)</returns>
+        /// <returns>Found or created (if create if not exists is passed true) folder object</returns>
         public static PortableDeviceFolder checkIfFolderExists(WindowsPortableDevice device, PortableDeviceObject root, String folderName, bool createIfNotExists) {
-            PortableDeviceObject check = checkIfFileExists(device, (PortableDeviceFolder)root, folderName);
-            if (check != null) return (PortableDeviceFolder)check;
+            PortableDeviceFolder root_folder = device.GetContents((PortableDeviceFolder)root);
+            foreach (PortableDeviceObject item in root_folder.Files) {
+                if (item is PortableDeviceFolder && item.Name == folderName) {
+                    return (PortableDeviceFolder)item;
+                }
+            }
             Console.WriteLine("(checkIfFolderExists) Passing to create folder :: " + root.Id + "," + folderName);
             if (createIfNotExists) {
                 string new_folder_pid = device.CreateFolder(root.Id, folderName);
