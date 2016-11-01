@@ -320,12 +320,9 @@ namespace AndroSyncTunes {
             // Connect to device
             devices.DevicesList[device_list_combobox.SelectedIndex].Connect();
             Console.WriteLine("============ DEBUGGING SYNC ============");
-            Console.WriteLine("RootID:: " + this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value);
-            Console.WriteLine("DevObj:: " + this.devices.DevicesList[device_list_combobox.SelectedIndex].DeviceModel);
-            Console.WriteLine("DevList:: " + this.devices.DevicesList.ToArray().ToString());
-            Console.WriteLine("RootIs:: " + this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value);
             Console.WriteLine("RootNameIs:: " + this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value.Name);
-            Console.WriteLine("Result of check :: " + MTPUtils.checkIfFolderExists(this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value, "Musica", true, this.devices.DevicesList[device_list_combobox.SelectedIndex]));
+            String check_root_folder = MTPUtils.checkIfFolderExists(this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value, "Musica", true, this.devices.DevicesList[device_list_combobox.SelectedIndex]);
+            Console.WriteLine("Result of check :: " + check_root_folder);
             // Retrieve desired content
             //PortableDeviceObject storage_folder = devices.DevicesList[device_list_combobox.SelectedIndex].GetContents().Files[device_storage_list_combobox.SelectedIndex];
             devices.DevicesList[device_list_combobox.SelectedIndex].Disconnect();

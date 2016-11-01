@@ -32,7 +32,7 @@ namespace AndroSyncTunes {
             String check = checkIfFileExists((PortableDeviceFolder)root, folderName, device);
             if (check != null) return check;
             Console.WriteLine("Passing to create folder :: " + root.PersistentId + "," + folderName);
-            if (createIfNotExists) return device.CreateFolder(root.PersistentId, folderName);
+            if (createIfNotExists) return device.CreateFolder(root.Id, folderName);
             return null;
         }
 
