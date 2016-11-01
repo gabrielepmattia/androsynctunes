@@ -7,6 +7,9 @@ using WindowsPortableDevicesLib.Domain;
 using WindowsPortableDevicesLib;
 
 namespace AndroSyncTunes {
+    /// <summary>
+    /// This class contains method useful methods for MTP devices
+    /// </summary>
     class MTPUtils {
         /// <summary>
         /// Check if file exists only in the root given
@@ -27,7 +30,7 @@ namespace AndroSyncTunes {
         /// </summary>
         /// <param name="root"></param>
         /// <param name="createIfNotExists"></param>
-        /// <returns>The persistent ID of the folder if exsist (Or created)</returns>
+        /// <returns>The persistent ID of the folder if exists (Or created)</returns>
         public static String checkIfFolderExists(PortableDeviceObject root, String folderName, bool createIfNotExists, WindowsPortableDevice device) {
             String check = checkIfFileExists((PortableDeviceFolder)root, folderName, device);
             if (check != null) return check;

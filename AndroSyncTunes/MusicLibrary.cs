@@ -7,6 +7,9 @@ using System.Text;
 using iTunesLib;
 
 namespace AndroSyncTunes {
+    /// <summary>
+    /// This class is an abstraction of the iTunes Library that includes also Artists and Albums
+    /// </summary>
     class MusicLibrary {
         public IList<String> Albums { get; }
         public IList<String> Artists { get; }

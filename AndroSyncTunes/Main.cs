@@ -319,10 +319,13 @@ namespace AndroSyncTunes {
             // Start syncing
             // Connect to device
             devices.DevicesList[device_list_combobox.SelectedIndex].Connect();
-            Console.WriteLine("============ DEBUGGING SYNC ============");
-            Console.WriteLine("RootNameIs:: " + this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value.Name);
-            String check_root_folder = MTPUtils.checkIfFolderExists(this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value, "Musica", true, this.devices.DevicesList[device_list_combobox.SelectedIndex]);
-            Console.WriteLine("Result of check :: " + check_root_folder);
+            //Console.WriteLine("============ DEBUGGING SYNC ============");
+            //Console.WriteLine("RootNameIs:: " + this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value.Name);
+            // Get the root folder ID
+            String root_folder_pid = MTPUtils.checkIfFolderExists(this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value, "Musica", true, this.devices.DevicesList[device_list_combobox.SelectedIndex]);
+            //Console.WriteLine("Result of check :: " + root_folder_pid);
+            // Now enter in that folder and copy files
+
             // Retrieve desired content
             //PortableDeviceObject storage_folder = devices.DevicesList[device_list_combobox.SelectedIndex].GetContents().Files[device_storage_list_combobox.SelectedIndex];
             devices.DevicesList[device_list_combobox.SelectedIndex].Disconnect();
