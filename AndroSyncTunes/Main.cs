@@ -197,24 +197,21 @@ namespace AndroSyncTunes {
         }
 
         private void artists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
-            //checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString();
+            this.BeginInvoke((MethodInvoker)(
+            () => checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString()));
+            
         }
 
         private void albums_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
-            checked_albums_label.Text = albums_checkedlist.CheckedItems.Count.ToString();
+            this.BeginInvoke((MethodInvoker)(
+            () => checked_albums_label.Text = albums_checkedlist.CheckedItems.Count.ToString()));
         }
 
         private void playlists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
-            checked_playlist_label.Text = playlists_checkedlist.CheckedItems.Count.ToString();
+            this.BeginInvoke((MethodInvoker)(
+            () => checked_playlist_label.Text = playlists_checkedlist.CheckedItems.Count.ToString()));
         }
 
-        private void artists_checkedlist_SelectedIndexChanged(object sender, EventArgs e) {
-            //checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString();
-        }
-
-        private void artists_checkedlist_MouseClick(object sender, MouseEventArgs e) {
-            checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString();
-        }
 
         // ======================== GUI Methods ========================
         private void updateArtistCheckedList() {
@@ -282,19 +279,23 @@ namespace AndroSyncTunes {
 
         private void sync_button_Click(object sender, EventArgs e) {
             tracks_to_sync.Clear();
+            toolStripStatusLabel2.Text = "Gathering songs...";
             // Calculate the tracks to sync
             // Check if entire library is selected
             if (entire_library_radio.Checked == true) {
                 foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
-                    if (track.Kind == ITTrackKind.ITTrackKindFile && track.Enabled == true) {
-                        tracks_to_sync.Add(track);
+                    if (track.Kind == ITTrackKind.ITTrackKindFile) {
+                        // Check if only checked is checked
+                        if ((sync_checked_checkbox.Checked == true && track.Enabled == true) || sync_checked_checkbox.Checked == false) tracks_to_sync.Add(track);
                     }
                 }
             } else {
                 // Add from the Playlists
                 //foreach(KeyValuePair<String, IITPlaylist> playlist_pair in library.Playlists) {
                 foreach (int selected_playlist in playlists_checkedlist.CheckedIndices) {
-                    foreach (IITTrack track in library.Playlists.ElementAt(selected_playlist).Value.Tracks) tracks_to_sync.Add(track);
+                    foreach (IITTrack track in library.Playlists.ElementAt(selected_playlist).Value.Tracks) {
+                        if ((sync_checked_checkbox.Checked == true && track.Enabled == true) || sync_checked_checkbox.Checked == false) tracks_to_sync.Add(track);
+                    }
                 }
                 // Add form the Albums
                 foreach (String album in albums_checkedlist.CheckedItems) {
@@ -327,9 +328,15 @@ namespace AndroSyncTunes {
             Console.WriteLine("[Main] root_folder_pid :: " + root_folder_obj.Id + " root_folder_obj :: " + root_folder_obj);
             foreach (IITTrack track in tracks_to_sync) {
                 // Now enter in that folder and copy files
+                toolStripStatusLabel2.Text = "Copying " + track.Name + " of " + track.Artist;
                 MTPiLibraryUtils.copyTrackToGivenRootWithArtistAlbumScheme(device, (PortableDeviceFolder)root_folder_obj, track);
             }
             device.Disconnect();
+        }
+
+        private void entire_library_radio_CheckedChanged(object sender, EventArgs e) {
+            if (((RadioButton)sender).Checked == true) song_chooser_groupbox.Enabled = false;
+            else song_chooser_groupbox.Enabled = true;
         }
     }
 }

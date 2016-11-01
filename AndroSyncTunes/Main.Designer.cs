@@ -52,15 +52,16 @@ namespace AndroSyncTunes {
             this.sync_music_videos_checkbox = new System.Windows.Forms.CheckBox();
             this.sync_checked_checkbox = new System.Windows.Forms.CheckBox();
             this.sync_button = new System.Windows.Forms.Button();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.label1 = new System.Windows.Forms.Label();
             this.sync_mvideo_checkbox = new System.Windows.Forms.CheckBox();
             this.sync_memo_checkboa = new System.Windows.Forms.CheckBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.select_device_groupbox.SuspendLayout();
             this.choose_sync_groupbox.SuspendLayout();
             this.song_chooser_groupbox.SuspendLayout();
             this.other_options_groupbox.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // device_list_combobox
@@ -157,6 +158,7 @@ namespace AndroSyncTunes {
             this.entire_library_radio.TabStop = true;
             this.entire_library_radio.Text = "Sync the entire library with your device";
             this.entire_library_radio.UseVisualStyleBackColor = true;
+            this.entire_library_radio.CheckedChanged += new System.EventHandler(this.entire_library_radio_CheckedChanged);
             // 
             // song_chooser_groupbox
             // 
@@ -172,6 +174,7 @@ namespace AndroSyncTunes {
             this.song_chooser_groupbox.Controls.Add(this.artists_for_list_label);
             this.song_chooser_groupbox.Controls.Add(this.search_artist_textbox);
             this.song_chooser_groupbox.Controls.Add(this.artists_checkedlist);
+            this.song_chooser_groupbox.Enabled = false;
             this.song_chooser_groupbox.Location = new System.Drawing.Point(275, 12);
             this.song_chooser_groupbox.Name = "song_chooser_groupbox";
             this.song_chooser_groupbox.Size = new System.Drawing.Size(589, 181);
@@ -289,8 +292,6 @@ namespace AndroSyncTunes {
             this.artists_checkedlist.Size = new System.Drawing.Size(188, 109);
             this.artists_checkedlist.TabIndex = 0;
             this.artists_checkedlist.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.artists_checkedlist_ItemCheck);
-            this.artists_checkedlist.MouseClick += new System.Windows.Forms.MouseEventHandler(this.artists_checkedlist_MouseClick);
-            this.artists_checkedlist.SelectedIndexChanged += new System.EventHandler(this.artists_checkedlist_SelectedIndexChanged);
             // 
             // other_options_groupbox
             // 
@@ -344,20 +345,6 @@ namespace AndroSyncTunes {
             this.sync_button.UseVisualStyleBackColor = true;
             this.sync_button.Click += new System.EventHandler(this.sync_button_Click);
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 230);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(873, 22);
-            this.statusStrip1.TabIndex = 8;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
-            this.toolStripStatusLabel1.Text = "Ready";
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -387,13 +374,30 @@ namespace AndroSyncTunes {
             this.sync_memo_checkboa.Text = "Sync also voice memos";
             this.sync_memo_checkboa.UseVisualStyleBackColor = true;
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel2});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 230);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(873, 22);
+            this.statusStrip1.TabIndex = 10;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(41, 17);
+            this.toolStripStatusLabel2.Text = "Ready!";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(873, 252);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.sync_button);
             this.Controls.Add(this.other_options_groupbox);
             this.Controls.Add(this.song_chooser_groupbox);
@@ -410,6 +414,8 @@ namespace AndroSyncTunes {
             this.song_chooser_groupbox.PerformLayout();
             this.other_options_groupbox.ResumeLayout(false);
             this.other_options_groupbox.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -444,11 +450,12 @@ namespace AndroSyncTunes {
         private System.Windows.Forms.Label checked_artists_label;
         private System.Windows.Forms.Label free_label;
         private System.Windows.Forms.Button sync_button;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox sync_mvideo_checkbox;
         private System.Windows.Forms.CheckBox sync_memo_checkboa;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
     }
 }
 
