@@ -196,87 +196,6 @@ namespace AndroSyncTunes {
             if (device_storage_list_combobox.Items.Count > 0) device_storage_list_combobox.SelectedIndex = 0;
         }
 
-        private void artists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
-            this.BeginInvoke((MethodInvoker)(
-            () => checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString()));
-            
-        }
-
-        private void albums_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
-            this.BeginInvoke((MethodInvoker)(
-            () => checked_albums_label.Text = albums_checkedlist.CheckedItems.Count.ToString()));
-        }
-
-        private void playlists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
-            this.BeginInvoke((MethodInvoker)(
-            () => checked_playlist_label.Text = playlists_checkedlist.CheckedItems.Count.ToString()));
-        }
-
-
-        // ======================== GUI Methods ========================
-        private void updateArtistCheckedList() {
-            foreach (String artist in library.Artists) {
-                if (artist == null) artists_checkedlist.Items.Add(UNKNOWN_STRING);
-                else artists_checkedlist.Items.Add(artist);
-            }
-        }
-
-        private void updateAlbumsCheckedList() {
-            foreach (String album in library.Albums) {
-                if (album == null) albums_checkedlist.Items.Add(UNKNOWN_STRING);
-                else albums_checkedlist.Items.Add(album);
-            }
-        }
-
-        private void updatePlaylistsCheckedList() {
-            playlists_checkedlist.Items.Clear();
-            foreach (KeyValuePair<String, IITPlaylist> playlist_pair in library.Playlists) {
-                playlists_checkedlist.Items.Add(playlist_pair.Key);
-            }
-        }
-
-        private void button1_Click(object sender, EventArgs e) {
-
-
-            // Check from Playlists
-            /*
-            foreach (String playlist_checked_string in playlists_checkedlist.Items) {
-                foreach (IITPlaylist playlist_o in o_iTunes.LibrarySource.Playlists) {
-                    if (playlist_o.Name == playlist_checked_string) {
-                        foreach (IITTrack track in playlist_o.Tracks) {
-                            tracks_to_sync.Add(track);
-                            Console.WriteLine(track.Name);
-                        }
-                    }
-                    break;
-                }
-            }
-            */
-            /*
-            foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
-                // Check from Artists
-
-                // Check from Albums
-
-                // Check from Playlists
-
-            }
-            */
-            label1.Text = tracks_to_sync.Count.ToString();
-            label1.Refresh();
-            /*
-            WindowsPortableDevice selected_device = devices.DevicesList[device_list_combobox.SelectedIndex];
-            selected_device.Connect();
-            var contents = selected_device.GetContents().Files;
-            String music_folder = devices.DevicesList[device_list_combobox.SelectedIndex].CreateFolder(devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].PersistentId, "Music");
-            selected_device.Disconnect();
-            foreach (IITTrack track in tracks_to_sync) {
-                selected_device.Connect();
-                selected_device.TransferContentToDevice(((IITFileOrCDTrack)track).Location, music_folder);
-                selected_device.Disconnect();
-                */
-        }
-
         private void sync_button_Click(object sender, EventArgs e) {
             tracks_to_sync.Clear();
             toolStripStatusLabel2.Text = "Gathering songs...";
@@ -334,9 +253,59 @@ namespace AndroSyncTunes {
             device.Disconnect();
         }
 
+        private void updateArtistCheckedList() {
+            foreach (String artist in library.Artists) {
+                if (artist == null) artists_checkedlist.Items.Add(UNKNOWN_STRING);
+                else artists_checkedlist.Items.Add(artist);
+            }
+        }
+
+        private void updateAlbumsCheckedList() {
+            foreach (String album in library.Albums) {
+                if (album == null) albums_checkedlist.Items.Add(UNKNOWN_STRING);
+                else albums_checkedlist.Items.Add(album);
+            }
+        }
+
+        private void updatePlaylistsCheckedList() {
+            playlists_checkedlist.Items.Clear();
+            foreach (KeyValuePair<String, IITPlaylist> playlist_pair in library.Playlists) {
+                playlists_checkedlist.Items.Add(playlist_pair.Key);
+            }
+        }
+
+        // ================================================ GUI Methods ================================================
+        private void artists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
+            this.BeginInvoke((MethodInvoker)(
+            () => checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString()));
+
+        }
+
+        private void albums_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
+            this.BeginInvoke((MethodInvoker)(
+            () => checked_albums_label.Text = albums_checkedlist.CheckedItems.Count.ToString()));
+        }
+
+        private void playlists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
+            this.BeginInvoke((MethodInvoker)(
+            () => checked_playlist_label.Text = playlists_checkedlist.CheckedItems.Count.ToString()));
+        }
+
         private void entire_library_radio_CheckedChanged(object sender, EventArgs e) {
             if (((RadioButton)sender).Checked == true) song_chooser_groupbox.Enabled = false;
             else song_chooser_groupbox.Enabled = true;
+        }
+
+        private void search_artist_placeholdertextbox_TextChanged(object sender, EventArgs e) {
+            artists_checkedlist.TopIndex = artists_checkedlist.FindString(search_artist_placeholdertextbox.Text);
+        }
+
+        private void search_album_placeholdertextbox_TextChanged(object sender, EventArgs e) {
+            albums_checkedlist.TopIndex = albums_checkedlist.FindString(search_album_placeholdertextbox.Text);
+        }
+
+        private void search_playlist_placeholdertextbox_TextChanged(object sender, EventArgs e) {
+            playlists_checkedlist.TopIndex = playlists_checkedlist.FindString(search_playlist_placeholdertextbox.Text);
         }
     }
 }
