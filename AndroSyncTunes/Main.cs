@@ -318,17 +318,18 @@ namespace AndroSyncTunes {
 
             // Start syncing
             // Connect to device
-            devices.DevicesList[device_list_combobox.SelectedIndex].Connect();
+            WindowsPortableDevice device = this.devices.DevicesList[device_list_combobox.SelectedIndex];
+            PortableDeviceObject storage = this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value;
+            device.Connect();
             //Console.WriteLine("============ DEBUGGING SYNC ============");
             //Console.WriteLine("RootNameIs:: " + this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value.Name);
-            // Get the root folder ID
-            String root_folder_pid = MTPUtils.checkIfFolderExists(this.devices.DevicesResourcesList[device_list_combobox.SelectedIndex][device_storage_list_combobox.SelectedIndex].Value, "Musica", true, this.devices.DevicesList[device_list_combobox.SelectedIndex]);
-            //Console.WriteLine("Result of check :: " + root_folder_pid);
+            // Get the root folder obj
+            PortableDeviceFolder root_folder_obj = MTPUtils.checkIfFolderExists(device, storage, "Musica", true);
+            Console.WriteLine("[Main] root_folder_pid :: " + root_folder_obj.Id + " root_folder_obj :: " + root_folder_obj);
             // Now enter in that folder and copy files
-
+            MTPiLibraryUtils.copyTrackToGivenRootWithArtistAlbumScheme(device, (PortableDeviceFolder)root_folder_obj, tracks_to_sync[0]);
             // Retrieve desired content
-            //PortableDeviceObject storage_folder = devices.DevicesList[device_list_combobox.SelectedIndex].GetContents().Files[device_storage_list_combobox.SelectedIndex];
-            devices.DevicesList[device_list_combobox.SelectedIndex].Disconnect();
+            device.Disconnect();
         }
     }
 }

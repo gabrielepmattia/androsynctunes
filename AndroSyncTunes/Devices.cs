@@ -7,6 +7,9 @@ using WindowsPortableDevicesLib.Domain;
 using WindowsPortableDevicesLib;
 
 namespace AndroSyncTunes {
+    /// <summary>
+    /// This class is an abstraction for connected MTP devices
+    /// </summary>
     class Devices {
         private StandardWindowsPortableDeviceService devices_service;
         /// <summary>
@@ -18,7 +21,6 @@ namespace AndroSyncTunes {
         /// </summary>
         public IList<IList<KeyValuePair<String, PortableDeviceObject>>> DevicesResourcesList { get; }
 
-        
         public Devices() {
             this.devices_service = new StandardWindowsPortableDeviceService();
             this.DevicesList = devices_service.Devices;
@@ -27,7 +29,7 @@ namespace AndroSyncTunes {
                 int i = 0;
                 foreach (WindowsPortableDevice device in DevicesList) {
                     device.Connect();
-                    this.DevicesResourcesList.Add(new List<KeyValuePair<String, PortableDeviceObject>>()); 
+                    this.DevicesResourcesList.Add(new List<KeyValuePair<String, PortableDeviceObject>>());
                     foreach (PortableDeviceFolder item in device.GetContents().Files) {
                         DevicesResourcesList[i].Add(new KeyValuePair<string, PortableDeviceObject>(item.Name, item));
                     }

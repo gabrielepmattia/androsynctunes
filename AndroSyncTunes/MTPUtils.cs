@@ -19,9 +19,9 @@ namespace AndroSyncTunes {
         /// <param name="createIfNotExists"></param>
         /// <param name="device"></param>
         /// <returns></returns>
-        public static String checkIfFileExists(PortableDeviceObject root, String fileName, WindowsPortableDevice device) {
+        public static PortableDeviceObject checkIfFileExists(WindowsPortableDevice device, PortableDeviceObject root, String fileName) {
             PortableDeviceFolder root_folder = device.GetContents((PortableDeviceFolder)root);
-            foreach (PortableDeviceObject item in root_folder.Files) if (item.Name == fileName) return item.PersistentId;
+            foreach (PortableDeviceObject item in root_folder.Files) if (item.Name == fileName) return item;
             return null;
         }
 
@@ -31,11 +31,14 @@ namespace AndroSyncTunes {
         /// <param name="root"></param>
         /// <param name="createIfNotExists"></param>
         /// <returns>The persistent ID of the folder if exists (Or created)</returns>
-        public static String checkIfFolderExists(PortableDeviceObject root, String folderName, bool createIfNotExists, WindowsPortableDevice device) {
-            String check = checkIfFileExists((PortableDeviceFolder)root, folderName, device);
-            if (check != null) return check;
-            Console.WriteLine("Passing to create folder :: " + root.PersistentId + "," + folderName);
-            if (createIfNotExists) return device.CreateFolder(root.Id, folderName);
+        public static PortableDeviceFolder checkIfFolderExists(WindowsPortableDevice device, PortableDeviceObject root, String folderName, bool createIfNotExists) {
+            PortableDeviceObject check = checkIfFileExists(device, (PortableDeviceFolder)root, folderName);
+            if (check != null) return (PortableDeviceFolder)check;
+            Console.WriteLine("(checkIfFolderExists) Passing to create folder :: " + root.Id + "," + folderName);
+            if (createIfNotExists) {
+                string new_folder_pid = device.CreateFolder(root.Id, folderName);
+                return (PortableDeviceFolder)device.GetObject(root.Id, new_folder_pid);
+            }
             return null;
         }
 
@@ -54,15 +57,5 @@ namespace AndroSyncTunes {
                 }
             }
         }
-        /*
-        public static void _CheckIfFolderExist(PortableDeviceFolder folder) {
-            foreach (var item in folder.Files) {
-                Console.WriteLine(item.Name);
-                if (item is PortableDeviceFolder) {
-                    CheckIfFolderExist((PortableDeviceFolder)item);
-                }
-            }
-        }
-        */
     }
 }

@@ -68,7 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Devices.cs" />
-    <Compile Include="iLibraryUtils.cs" />
+    <Compile Include="MTPiLibraryUtils.cs" />
     <Compile Include="MusicLibrary.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
