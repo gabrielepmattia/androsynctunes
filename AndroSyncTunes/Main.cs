@@ -16,6 +16,7 @@ using WindowsPortableDevicesLib;
 using iTunesAdminLib;
 using iTunesLib;
 using System.Diagnostics;
+using System.Resources;
 
 namespace AndroSyncTunes {
     public partial class Main : Form {
@@ -277,18 +278,18 @@ namespace AndroSyncTunes {
         // ================================================ GUI Methods ================================================
         private void artists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
             this.BeginInvoke((MethodInvoker)(
-            () => checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString()));
+            () => checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString() + " " + AndroSyncTunes.Resources.GlobalStrings.checked_items));
 
         }
 
         private void albums_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
             this.BeginInvoke((MethodInvoker)(
-            () => checked_albums_label.Text = albums_checkedlist.CheckedItems.Count.ToString()));
+            () => checked_albums_label.Text = albums_checkedlist.CheckedItems.Count.ToString() + " " + AndroSyncTunes.Resources.GlobalStrings.checked_items));
         }
 
         private void playlists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
             this.BeginInvoke((MethodInvoker)(
-            () => checked_playlist_label.Text = playlists_checkedlist.CheckedItems.Count.ToString()));
+            () => checked_playlist_label.Text = playlists_checkedlist.CheckedItems.Count.ToString() + " " + AndroSyncTunes.Resources.GlobalStrings.checked_items));
         }
 
         private void entire_library_radio_CheckedChanged(object sender, EventArgs e) {
