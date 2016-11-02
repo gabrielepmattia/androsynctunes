@@ -68,5 +68,14 @@ namespace AndroSyncTunes.Resources {
                 return ResourceManager.GetString("checked_items", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        internal static string unknown {
+            get {
+                return ResourceManager.GetString("unknown", resourceCulture);
+            }
+        }
     }
 }

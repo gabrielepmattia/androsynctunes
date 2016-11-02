@@ -120,4 +120,7 @@
   <data name="checked_items" xml:space="preserve">
     <value>checked item(s)</value>
   </data>
+  <data name="unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
 </root>

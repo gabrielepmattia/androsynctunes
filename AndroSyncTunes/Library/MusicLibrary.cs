@@ -6,7 +6,7 @@ using System.Text;
 
 using iTunesLib;
 
-namespace AndroSyncTunes {
+namespace AndroSyncTunes.Library {
     /// <summary>
     /// This class is an abstraction of the iTunes Library that includes also Artists and Albums
     /// </summary>

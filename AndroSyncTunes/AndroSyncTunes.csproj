@@ -68,8 +68,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Devices.cs" />
+    <Compile Include="Library\Album.cs" />
+    <Compile Include="Library\Artist.cs" />
+    <Compile Include="Library\NewMusicLibrary.cs" />
     <Compile Include="MTPiLibraryUtils.cs" />
-    <Compile Include="MusicLibrary.cs" />
+    <Compile Include="Library\MusicLibrary.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>

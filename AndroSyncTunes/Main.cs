@@ -9,14 +9,12 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 
+using iTunesLib;
 using PortableDeviceApiLib;
 using WindowsPortableDevicesLib.Domain;
 using WindowsPortableDevicesLib;
 
-using iTunesAdminLib;
-using iTunesLib;
-using System.Diagnostics;
-using System.Resources;
+using AndroSyncTunes.Library;
 
 namespace AndroSyncTunes {
     public partial class Main : Form {
@@ -24,11 +22,13 @@ namespace AndroSyncTunes {
         private iTunesApp o_iTunes;
         private Devices devices;
         // Lists
+        NewMusicLibrary music_library;
         MusicLibrary library;
         List<IITTrack> tracks_to_sync;
 
         public Main() {
             InitializeComponent();
+            /*
             // Initialize global variables
             this.o_iTunes = new iTunesApp();
             List<String> library_albums = new List<String>();
@@ -48,112 +48,18 @@ namespace AndroSyncTunes {
                 if (!library_artists.Contains(track.Artist)) library_artists.Add(track.Artist);
             }
             this.library = new MusicLibrary(library_albums, library_artists, o_iTunes.LibrarySource.Playlists);
-            updateAlbumsCheckedList();
-            updateArtistCheckedList();
-            updatePlaylistsCheckedList();
 
+            */
+            // Instantiate the devices
             this.devices = new Devices();
+            // Instantiate the libraries
+            this.music_library = new NewMusicLibrary();
+            // Update the GUI with the gathered informations
+            loadLibraryDataInGUI();
         }
 
         private void Main_Load(object sender, EventArgs e) {
-            /*
-            StandardWindowsPortableDeviceService service = new StandardWindowsPortableDeviceService();
 
-            Console.WriteLine("Available devices:");
-
-            IList<WindowsPortableDevice> devices = service.Devices;
-
-            if (devices.Count == 0) {
-
-                Console.WriteLine("No devices.");
-            } else {
-
-                int index = 0;
-                foreach (WindowsPortableDevice device in devices) {
-
-                    device.Connect();
-                    Console.WriteLine("-------------------------------------------------------------");
-                    Console.WriteLine("{0} {1} {2}", ++index, device.DeviceModel, device.DeviceID);
-                    var folder = device.GetContents();
-                    foreach (var item in folder.Files) {
-                        DisplayObject(item);
-                    }
-                    Console.WriteLine("ID::{0} PersID::{1}", folder.Files.First().Id, folder.Files.First().PersistentId);
-                    device.TransferContentToDevice("C:\\Users\\gabry\\Downloads\\file.txt", folder.Files.First().Id);
-                    Console.WriteLine("-------------------------------------------------------------");
-
-                    device.Disconnect();
-                }
-            }
-            */
-        }
-
-
-        private void Main_Load_old(object sender, EventArgs e) {
-            /*
-            Console.WriteLine("\n");
-            // Create the client
-            // Create our client information collection
-            PortableDeviceApiLib.IPortableDeviceValues pValues =
-                (PortableDeviceApiLib.IPortableDeviceValues)
-                        new PortableDeviceTypesLib.PortableDeviceValues();
-
-            // We have to provide at the least our name, version, revision       
-            pValues.SetStringValue(
-                    ref PortableDevicePKeys.WPD_CLIENT_NAME, "AndroSyncTunes");
-            pValues.SetUnsignedIntegerValue(
-                    ref PortableDevicePKeys.WPD_CLIENT_MAJOR_VERSION, 1);
-            pValues.SetUnsignedIntegerValue(
-                    ref PortableDevicePKeys.WPD_CLIENT_MINOR_VERSION, 0);
-            pValues.SetUnsignedIntegerValue(
-                    ref PortableDevicePKeys.WPD_CLIENT_REVISION, 2);
-
-            PortableDeviceManager deviceManager = new PortableDeviceManager();
-
-
-            deviceManager.RefreshDeviceList();
-            uint cDevices = 1;
-            deviceManager.GetDevices(null, ref cDevices);
-
-            if (cDevices > 0) {
-                string[] deviceIDs = new string[cDevices];
-                deviceManager.GetDevices(deviceIDs, ref cDevices);
-                // Create devices objects
-                //IPortableDevice[] devices = new IPortableDevice[cDevices];
-                //IPortableDeviceContent[] devices_contents = new IPortableDeviceContent[cDevices];
-                //IPortableDeviceResources[] devices_resources = new IPortableDeviceResources[cDevices];
-
-                for (int ndxDevices = 0; ndxDevices < cDevices; ndxDevices++) {
-                    Console.WriteLine("==> Device[{0}]: {1}", ndxDevices, deviceIDs[ndxDevices]);  
-                }
-
-                // Connect at first device
-                int device_chosen = 0;
-                IPortableDevice device = new PortableDevice();
-                IPortableDeviceContent device_contents;
-                IPortableDeviceResources device_resources;
-                IStream stream;
-
-                device.Open(deviceIDs[device_chosen], pValues);
-                Console.WriteLine("==> Device[{0}]: Connected", device_chosen);
-                // Get the content and the resource
-                device.Content(out device_contents);
-                //PortableDeviceMethods.Enumerate(ref device_contents, "DEVICE", "");
-                device_contents.Transfer(out device_resources);
-                // Get the file
-                FileStream file = new FileStream(@"C:\Users\gabry\Downloads\file.txt", FileMode.Open);
-                
-
-                // see https://msdn.microsoft.com/en-us/library/dd388994(v=vs.85).aspx
-                
-
-            } else {
-                Console.WriteLine("===> No WPD devices are present!");
-            }
-            */
-            /*WPDInterfacing.TestInterfacing instance = new WPDInterfacing.TestInterfacing();
-            instance.enumerateWPDDevices();
-    */
         }
 
         private void refresh_devices_button_Click(object sender, EventArgs e) {
@@ -253,29 +159,27 @@ namespace AndroSyncTunes {
             }
             device.Disconnect();
         }
+        
+        // ================================================ GUI Methods ================================================
+        private void loadLibraryDataInGUI() {
+            updateAlbumsCheckedList();
+            updateArtistCheckedList();
+            updatePlaylistsCheckedList();
+        }
 
         private void updateArtistCheckedList() {
-            foreach (String artist in library.Artists) {
-                if (artist == null) artists_checkedlist.Items.Add(UNKNOWN_STRING);
-                else artists_checkedlist.Items.Add(artist);
-            }
+            foreach (Artist a in music_library.Artists) artists_checkedlist.Items.Add(a.Name);
+            
         }
 
         private void updateAlbumsCheckedList() {
-            foreach (String album in library.Albums) {
-                if (album == null) albums_checkedlist.Items.Add(UNKNOWN_STRING);
-                else albums_checkedlist.Items.Add(album);
-            }
+            foreach (Album a in music_library.Albums) albums_checkedlist.Items.Add(a.Name);
         }
 
         private void updatePlaylistsCheckedList() {
-            playlists_checkedlist.Items.Clear();
-            foreach (KeyValuePair<String, IITPlaylist> playlist_pair in library.Playlists) {
-                playlists_checkedlist.Items.Add(playlist_pair.Key);
-            }
+            foreach (IITPlaylist p in music_library.Playlists) playlists_checkedlist.Items.Add(p.Name);
         }
 
-        // ================================================ GUI Methods ================================================
         private void artists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
             this.BeginInvoke((MethodInvoker)(
             () => checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString() + " " + AndroSyncTunes.Resources.GlobalStrings.checked_items));
