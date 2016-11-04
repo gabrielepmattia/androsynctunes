@@ -52,6 +52,7 @@ namespace AndroSyncTunes {
             this.devices = new Devices();
             // Instantiate the libraries
             this.music_library = new MusicLibrary();
+
             // Update the GUI with the gathered informations
             loadLibraryDataInGUI();
         }
@@ -120,14 +121,14 @@ namespace AndroSyncTunes {
                     }
                 }
                 // Add form the Albums
-                foreach (int album_i in albums_checkedlist.CheckedItems) {
+                foreach (int album_i in albums_checkedlist.CheckedIndices) {
                     foreach (IITTrack track in music_library.Albums.ElementAt(album_i).Tracks) {
                         if (sync_checked_checkbox.Checked && !track.Enabled) continue;
                         music_library.addTrackToSync(track);
                     }
                 }
                 // Add from the Artists
-                foreach (int artist_i in artists_checkedlist.CheckedItems) {
+                foreach (int artist_i in artists_checkedlist.CheckedIndices) {
                     foreach (Album album in music_library.Artists.ElementAt(artist_i).Albums) {
                         foreach (IITTrack track in album.Tracks) {
                             if (sync_checked_checkbox.Checked && !track.Enabled) continue;

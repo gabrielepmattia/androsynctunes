@@ -11,7 +11,7 @@ namespace AndroSyncTunes.Library {
         public IList<Album> Albums { get; }
         public IITTrackCollection Tracks { get; }
         public IList<IITPlaylist> Playlists { get; }
-        public IList<IITTrack> TracksToSync { get; set; }
+        public IList<IITTrack> TracksToSync { get; private set; }
 
         public MusicLibrary() {
             iTunesApp o_itunes = new iTunesApp();
@@ -27,7 +27,7 @@ namespace AndroSyncTunes.Library {
             this.Artists = new List<Artist>();
             foreach (IITTrack track in Tracks) {
                 // We skip not downloaded songs here
-                if (track is IITFileOrCDTrack) continue;
+                if (!(track is IITFileOrCDTrack)) continue;
                 Artist artist = addArtist(track.Artist == null ? Resources.GlobalStrings.unknown : track.Artist);
                 Album album = addAlbum(track.Album == null ? Resources.GlobalStrings.unknown : track.Album);
                 artist.addAlbum(album);
@@ -54,6 +54,11 @@ namespace AndroSyncTunes.Library {
             // We skip not downloaded songs here
             if (!(track is IITFileOrCDTrack)) return;
             if (!TracksToSync.Contains(track)) this.TracksToSync.Add(track);
+        }
+
+        public void clearTracksToSync() {
+            TracksToSync = null;
+            TracksToSync = new List<IITTrack>();
         }
 
         // Debugging
