@@ -274,6 +274,7 @@ namespace AndroSyncTunes {
             // 
             // other_options_groupbox
             // 
+            this.other_options_groupbox.Controls.Add(this.sync_button);
             this.other_options_groupbox.Controls.Add(this.sync_memo_checkbox);
             this.other_options_groupbox.Controls.Add(this.sync_music_videos_checkbox);
             this.other_options_groupbox.Controls.Add(this.sync_checked_checkbox);
@@ -316,7 +317,7 @@ namespace AndroSyncTunes {
             // 
             // sync_button
             // 
-            this.sync_button.Location = new System.Drawing.Point(841, 296);
+            this.sync_button.Location = new System.Drawing.Point(176, 30);
             this.sync_button.Name = "sync_button";
             this.sync_button.Size = new System.Drawing.Size(75, 23);
             this.sync_button.TabIndex = 7;
@@ -357,7 +358,7 @@ namespace AndroSyncTunes {
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel2});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 267);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 266);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(916, 22);
             this.statusStrip1.TabIndex = 10;
@@ -514,8 +515,7 @@ namespace AndroSyncTunes {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(916, 289);
-            this.Controls.Add(this.sync_button);
+            this.ClientSize = new System.Drawing.Size(916, 288);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.label1);
