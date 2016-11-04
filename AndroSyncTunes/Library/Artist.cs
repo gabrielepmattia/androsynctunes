@@ -6,7 +6,7 @@ using System.Text;
 using iTunesLib;
 
 namespace AndroSyncTunes.Library {
-    class Artist {
+    class Artist : IComparable<Artist> {
         public String Name { get; }
         public IList<Album> Albums { get; }
         public Artist(String name) {
@@ -21,6 +21,10 @@ namespace AndroSyncTunes.Library {
         }
         public void addAlbum(Album album) {
             if (!Albums.Contains(album)) Albums.Add(album);
+        }
+
+        public int CompareTo(Artist other) {
+            return this.Name.CompareTo(other.Name);
         }
     }
 }

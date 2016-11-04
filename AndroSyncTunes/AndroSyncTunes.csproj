@@ -70,9 +70,9 @@
     <Compile Include="Devices.cs" />
     <Compile Include="Library\Album.cs" />
     <Compile Include="Library\Artist.cs" />
-    <Compile Include="Library\NewMusicLibrary.cs" />
-    <Compile Include="MTPiLibraryUtils.cs" />
     <Compile Include="Library\MusicLibrary.cs" />
+    <Compile Include="MTPiLibraryUtils.cs" />
+    <Compile Include="Library\OldMusicLibrary.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>

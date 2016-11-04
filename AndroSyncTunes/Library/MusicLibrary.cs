@@ -1,31 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 using System.Text;
 
 using iTunesLib;
 
 namespace AndroSyncTunes.Library {
-    /// <summary>
-    /// This class is an abstraction of the iTunes Library that includes also Artists and Albums
-    /// </summary>
     class MusicLibrary {
-        public IList<String> Albums { get; }
-        public IList<String> Artists { get; }
-        //public Dictionary<String, IITPlaylist> Playlists { get; }
-        public IList<KeyValuePair<String, IITPlaylist>> Playlists { get; }
+        public IList<Artist> Artists { get; }
+        public IList<Album> Albums { get; }
+        public IITTrackCollection Tracks { get; }
+        public IList<IITPlaylist> Playlists { get; }
+        public IList<IITTrack> TracksToSync { get; set; }
 
-        public MusicLibrary(List<String> albums, List<String> artists, IITPlaylistCollection playlists) {
-            albums.Sort();
-            artists.Sort();
-            this.Albums = albums;
-            this.Artists = artists;
-            this.Playlists = new List<KeyValuePair<String, IITPlaylist>>();
-            foreach (IITPlaylist playlist in playlists) {
-                Playlists.Add(new KeyValuePair<String, IITPlaylist>(playlist.Name, playlist));
+        public MusicLibrary() {
+            iTunesApp o_itunes = new iTunesApp();
+            this.Playlists = new List<IITPlaylist>();
+            this.TracksToSync = new List<IITTrack>();
+            // We remove not-music playlist here
+            for (int i = 13; i < o_itunes.LibrarySource.Playlists.Count; i++) {
+                Playlists.Add(o_itunes.LibrarySource.Playlists[i]);
             }
-            //TODO sort the playlist array
+            // We select only the Music playlist here
+            this.Tracks = o_itunes.LibrarySource.Playlists.ItemByName["Music"].Tracks;
+            this.Albums = new List<Album>();
+            this.Artists = new List<Artist>();
+            foreach (IITTrack track in Tracks) {
+                // We skip not downloaded songs here
+                if (track is IITFileOrCDTrack) continue;
+                Artist artist = addArtist(track.Artist == null ? Resources.GlobalStrings.unknown : track.Artist);
+                Album album = addAlbum(track.Album == null ? Resources.GlobalStrings.unknown : track.Album);
+                artist.addAlbum(album);
+                album.addTrack(track);
+            }
+            ((List<Artist>)Artists).Sort();
+            ((List<Album>)Albums).Sort();
+        }
+
+        private Artist addArtist(String name) {
+            foreach (Artist artist in Artists) if (artist.Name == name) return artist;
+            Artist new_artist = new Artist(name);
+            Artists.Add(new_artist);
+            return new_artist;
+        }
+        private Album addAlbum(String name) {
+            foreach (Album album in Albums) if (album.Name == name) return album;
+            Album new_album = new Album(name);
+            Albums.Add(new_album);
+            return new_album;
+        }
+
+        public void addTrackToSync(IITTrack track) {
+            Console.WriteLine("(addTrackToSync) added " + track.Name + " in " + ((IITFileOrCDTrack)track).Location);
+            if (!TracksToSync.Contains(track)) this.TracksToSync.Add(track);
+        }
+
+        // Debugging
+        public void logAlbums() {
+            int i = 0;
+            foreach (Album a in Albums) {
+                Console.WriteLine("> Album#{0} :: {1}", i, a.Name);
+                i++;
+            }
+        }
+
+        public void logArtists() {
+            int i = 0;
+            foreach (Artist a in Artists) {
+                Console.WriteLine("> Artists#{0} :: {1}", i, a.Name);
+                i++;
+            }
         }
     }
 }

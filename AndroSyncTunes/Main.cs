@@ -22,9 +22,7 @@ namespace AndroSyncTunes {
         private iTunesApp o_iTunes;
         private Devices devices;
         // Lists
-        NewMusicLibrary music_library;
-        MusicLibrary library;
-        List<IITTrack> tracks_to_sync;
+        MusicLibrary music_library;
 
         public Main() {
             InitializeComponent();
@@ -53,7 +51,7 @@ namespace AndroSyncTunes {
             // Instantiate the devices
             this.devices = new Devices();
             // Instantiate the libraries
-            this.music_library = new NewMusicLibrary();
+            this.music_library = new MusicLibrary();
             // Update the GUI with the gathered informations
             loadLibraryDataInGUI();
         }
@@ -104,45 +102,43 @@ namespace AndroSyncTunes {
         }
 
         private void sync_button_Click(object sender, EventArgs e) {
-            tracks_to_sync.Clear();
+            music_library.TracksToSync.Clear();
             toolStripStatusLabel2.Text = "Gathering songs...";
             // Calculate the tracks to sync
             // Check if entire library is selected
             if (entire_library_radio.Checked == true) {
-                foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
-                    if (track.Kind == ITTrackKind.ITTrackKindFile) {
-                        // Check if only checked is checked
-                        if ((sync_checked_checkbox.Checked == true && track.Enabled == true) || sync_checked_checkbox.Checked == false) tracks_to_sync.Add(track);
-                    }
+                foreach (IITTrack track in music_library.Tracks) {
+                    // Check if only checked is checked
+                    if ((sync_checked_checkbox.Checked == true && track.Enabled == true) || sync_checked_checkbox.Checked == false) music_library.addTrackToSync(track);
                 }
             } else {
                 // Add from the Playlists
                 //foreach(KeyValuePair<String, IITPlaylist> playlist_pair in library.Playlists) {
                 foreach (int selected_playlist in playlists_checkedlist.CheckedIndices) {
-                    foreach (IITTrack track in library.Playlists.ElementAt(selected_playlist).Value.Tracks) {
-                        if ((sync_checked_checkbox.Checked == true && track.Enabled == true) || sync_checked_checkbox.Checked == false) tracks_to_sync.Add(track);
+                    foreach (IITTrack track in music_library.Playlists.ElementAt(selected_playlist).Tracks) {
+                        if ((sync_checked_checkbox.Checked == true && track.Enabled == true) || sync_checked_checkbox.Checked == false) music_library.addTrackToSync(track);
                     }
                 }
                 // Add form the Albums
-                foreach (String album in albums_checkedlist.CheckedItems) {
-                    foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
-                        if ((track.Album == null && album != UNKNOWN_STRING) || track.Kind != ITTrackKind.ITTrackKindFile) continue;
+                foreach (int album_i in albums_checkedlist.CheckedItems) {
+                    foreach (IITTrack track in music_library.Albums.ElementAt(album_i).Tracks) {
                         if (sync_checked_checkbox.Checked && !track.Enabled) continue;
-                        if (track.Album.Equals(album) && !tracks_to_sync.Contains(track)) tracks_to_sync.Add(track);
+                        music_library.addTrackToSync(track);
                     }
                 }
                 // Add from the Artists
-                foreach (String artist in albums_checkedlist.CheckedItems) {
-                    foreach (IITTrack track in o_iTunes.LibraryPlaylist.Tracks) {
-                        if ((track.Artist == null && artist != UNKNOWN_STRING) || track.Kind != ITTrackKind.ITTrackKindFile) continue;
-                        if (sync_checked_checkbox.Checked && !track.Enabled) continue;
-                        if (track.Artist.Equals(artist) && !tracks_to_sync.Contains(track)) tracks_to_sync.Add(track);
+                foreach (int artist_i in artists_checkedlist.CheckedItems) {
+                    foreach (Album album in music_library.Artists.ElementAt(artist_i).Albums) {
+                        foreach (IITTrack track in album.Tracks) {
+                            if (sync_checked_checkbox.Checked && !track.Enabled) continue;
+                            music_library.addTrackToSync(track);
+                        }
                     }
                 }
             }
-            label1.Text = tracks_to_sync.Count.ToString();
+            label1.Text = music_library.TracksToSync.Count.ToString();
             label1.Refresh();
-
+            /*
             // Start syncing
             // Connect to device
             WindowsPortableDevice device = this.devices.DevicesList[device_list_combobox.SelectedIndex];
@@ -150,16 +146,18 @@ namespace AndroSyncTunes {
 
             device.Connect();
             // Get the root folder obj
+            
             PortableDeviceFolder root_folder_obj = MTPUtils.checkIfFolderExists(device, storage, "Musik", true);
             Console.WriteLine("[Main] root_folder_pid :: " + root_folder_obj.Id + " root_folder_obj :: " + root_folder_obj);
-            foreach (IITTrack track in tracks_to_sync) {
+            foreach (IITTrack track in music_library.TracksToSync) {
                 // Now enter in that folder and copy files
                 toolStripStatusLabel2.Text = "Copying " + track.Name + " of " + track.Artist;
                 MTPiLibraryUtils.copyTrackToGivenRootWithArtistAlbumScheme(device, (PortableDeviceFolder)root_folder_obj, track);
             }
             device.Disconnect();
+            */
         }
-        
+
         // ================================================ GUI Methods ================================================
         private void loadLibraryDataInGUI() {
             updateAlbumsCheckedList();
@@ -169,7 +167,7 @@ namespace AndroSyncTunes {
 
         private void updateArtistCheckedList() {
             foreach (Artist a in music_library.Artists) artists_checkedlist.Items.Add(a.Name);
-            
+
         }
 
         private void updateAlbumsCheckedList() {
