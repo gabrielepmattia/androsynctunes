@@ -51,7 +51,8 @@ namespace AndroSyncTunes.Library {
         }
 
         public void addTrackToSync(IITTrack track) {
-            Console.WriteLine("(addTrackToSync) added " + track.Name + " in " + ((IITFileOrCDTrack)track).Location);
+            // We skip not downloaded songs here
+            if (!(track is IITFileOrCDTrack)) return;
             if (!TracksToSync.Contains(track)) this.TracksToSync.Add(track);
         }
 
