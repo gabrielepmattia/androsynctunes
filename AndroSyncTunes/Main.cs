@@ -185,5 +185,18 @@ namespace AndroSyncTunes {
         private void search_playlist_placeholdertextbox_TextChanged(object sender, EventArgs e) {
             playlists_checkedlist.TopIndex = playlists_checkedlist.FindString(search_playlist_placeholdertextbox.Text);
         }
+
+        // 
+
+        private void uiBusyStart() {
+            progressBar1.Enabled = true;
+            progressBar1.Style = ProgressBarStyle.Marquee;
+            sync_button.Enabled = false;
+        }
+        private void uiBusyStop() {
+            progressBar1.Style = ProgressBarStyle.Blocks;
+            progressBar1.Enabled = false;
+            sync_button.Enabled = true;
+        }
     }
 }
