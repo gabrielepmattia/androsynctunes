@@ -13,7 +13,12 @@ namespace AndroSyncTunes {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main());
+
+            // Splashscreen
+            Starting.ShowSplashScreen();
+            Main mainForm = new Main(); //this takes ages
+            Starting.CloseForm();
+            Application.Run(mainForm);
         }
     }
 }

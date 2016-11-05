@@ -87,6 +87,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Starting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Starting.Designer.cs">
+      <DependentUpon>Starting.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\PlaceHolderTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -107,6 +113,9 @@
     <EmbeddedResource Include="Resources\GlobalStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Starting.resx">
+      <DependentUpon>Starting.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
