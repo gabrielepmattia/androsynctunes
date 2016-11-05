@@ -13,6 +13,7 @@ namespace AndroSyncTunes.Library {
         public IList<IITPlaylist> Playlists { get; }
         public IList<IITTrack> TracksToSync { get; private set; }
         public long TrackToSyncSize { get; private set; }
+        private object TracksToSyncLocker = new object();
 
         public MusicLibrary() {
             iTunesApp o_itunes = new iTunesApp();
@@ -53,11 +54,13 @@ namespace AndroSyncTunes.Library {
         }
 
         public void addTrackToSync(IITTrack track) {
-            // We skip not downloaded songs here
-            if (!(track is IITFileOrCDTrack)) return;
-            if (!TracksToSync.Contains(track)) {
-                this.TracksToSync.Add(track);
-                TrackToSyncSize += new System.IO.FileInfo(((IITFileOrCDTrack)track).Location).Length;
+            lock (TracksToSyncLocker) {
+                // We skip not downloaded songs here
+                if (!(track is IITFileOrCDTrack)) return;
+                if (!TracksToSync.Contains(track)) {
+                    this.TracksToSync.Add(track);
+                    TrackToSyncSize += new System.IO.FileInfo(((IITFileOrCDTrack)track).Location).Length;
+                }
             }
         }
 

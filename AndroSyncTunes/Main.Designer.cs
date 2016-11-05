@@ -65,13 +65,15 @@ namespace AndroSyncTunes {
             this.instructionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.creditsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sync_report_groupbox = new System.Windows.Forms.GroupBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.size_to_sync_value_label = new System.Windows.Forms.Label();
+            this.size_to_sync_label = new System.Windows.Forms.Label();
             this.track_to_sync_value_label = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.search_playlist_placeholdertextbox = new AndroSyncTunes.UI.PlaceHolderTextBox();
             this.search_album_placeholdertextbox = new AndroSyncTunes.UI.PlaceHolderTextBox();
             this.search_artist_placeholdertextbox = new AndroSyncTunes.UI.PlaceHolderTextBox();
-            this.size_to_sync_label = new System.Windows.Forms.Label();
-            this.size_to_sync_value_label = new System.Windows.Forms.Label();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.select_device_groupbox.SuspendLayout();
             this.choose_sync_groupbox.SuspendLayout();
             this.song_chooser_groupbox.SuspendLayout();
@@ -424,19 +426,22 @@ namespace AndroSyncTunes {
             // 
             this.file_toolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.file_toolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.exitToolStripMenuItem});
             this.file_toolStripDropDownButton.Image = ((System.Drawing.Image)(resources.GetObject("file_toolStripDropDownButton.Image")));
             this.file_toolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.file_toolStripDropDownButton.Name = "file_toolStripDropDownButton";
             this.file_toolStripDropDownButton.ShowDropDownArrow = false;
             this.file_toolStripDropDownButton.Size = new System.Drawing.Size(29, 22);
-            this.file_toolStripDropDownButton.Text = "File";
+            this.file_toolStripDropDownButton.Text = "&File";
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
-            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Text = "&Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -454,19 +459,19 @@ namespace AndroSyncTunes {
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
             this.toolStripDropDownButton1.ShowDropDownArrow = false;
             this.toolStripDropDownButton1.Size = new System.Drawing.Size(44, 22);
-            this.toolStripDropDownButton1.Text = "About";
+            this.toolStripDropDownButton1.Text = "&About";
             // 
             // instructionsToolStripMenuItem
             // 
             this.instructionsToolStripMenuItem.Name = "instructionsToolStripMenuItem";
-            this.instructionsToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.instructionsToolStripMenuItem.Text = "Instructions";
+            this.instructionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.instructionsToolStripMenuItem.Text = "&Instructions";
             // 
             // creditsToolStripMenuItem
             // 
             this.creditsToolStripMenuItem.Name = "creditsToolStripMenuItem";
-            this.creditsToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.creditsToolStripMenuItem.Text = "Credits";
+            this.creditsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.creditsToolStripMenuItem.Text = "&Credits";
             // 
             // sync_report_groupbox
             // 
@@ -482,12 +487,23 @@ namespace AndroSyncTunes {
             this.sync_report_groupbox.TabStop = false;
             this.sync_report_groupbox.Text = "5. Review&&Sync";
             // 
-            // progressBar1
+            // size_to_sync_value_label
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 336);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(877, 10);
-            this.progressBar1.TabIndex = 13;
+            this.size_to_sync_value_label.Location = new System.Drawing.Point(92, 42);
+            this.size_to_sync_value_label.Name = "size_to_sync_value_label";
+            this.size_to_sync_value_label.Size = new System.Drawing.Size(159, 13);
+            this.size_to_sync_value_label.TabIndex = 16;
+            this.size_to_sync_value_label.Text = "0";
+            this.size_to_sync_value_label.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // size_to_sync_label
+            // 
+            this.size_to_sync_label.AutoSize = true;
+            this.size_to_sync_label.Location = new System.Drawing.Point(6, 42);
+            this.size_to_sync_label.Name = "size_to_sync_label";
+            this.size_to_sync_label.Size = new System.Drawing.Size(67, 13);
+            this.size_to_sync_label.TabIndex = 15;
+            this.size_to_sync_label.Text = "Size to sync:";
             // 
             // track_to_sync_value_label
             // 
@@ -497,6 +513,13 @@ namespace AndroSyncTunes {
             this.track_to_sync_value_label.TabIndex = 14;
             this.track_to_sync_value_label.Text = "0";
             this.track_to_sync_value_label.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(12, 336);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(877, 10);
+            this.progressBar1.TabIndex = 13;
             // 
             // search_playlist_placeholdertextbox
             // 
@@ -534,23 +557,16 @@ namespace AndroSyncTunes {
             this.search_artist_placeholdertextbox.Text = "Search for artists...";
             this.search_artist_placeholdertextbox.TextChanged += new System.EventHandler(this.search_artist_placeholdertextbox_TextChanged);
             // 
-            // size_to_sync_label
+            // toolStripSeparator2
             // 
-            this.size_to_sync_label.AutoSize = true;
-            this.size_to_sync_label.Location = new System.Drawing.Point(6, 42);
-            this.size_to_sync_label.Name = "size_to_sync_label";
-            this.size_to_sync_label.Size = new System.Drawing.Size(67, 13);
-            this.size_to_sync_label.TabIndex = 15;
-            this.size_to_sync_label.Text = "Size to sync:";
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
-            // size_to_sync_value_label
+            // exitToolStripMenuItem
             // 
-            this.size_to_sync_value_label.Location = new System.Drawing.Point(92, 42);
-            this.size_to_sync_value_label.Name = "size_to_sync_value_label";
-            this.size_to_sync_value_label.Size = new System.Drawing.Size(159, 13);
-            this.size_to_sync_value_label.TabIndex = 16;
-            this.size_to_sync_value_label.Text = "0";
-            this.size_to_sync_value_label.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "&Exit";
             // 
             // Main
             // 
@@ -638,6 +654,8 @@ namespace AndroSyncTunes {
         private System.Windows.Forms.Label track_to_sync_value_label;
         private System.Windows.Forms.Label size_to_sync_value_label;
         private System.Windows.Forms.Label size_to_sync_label;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }
 

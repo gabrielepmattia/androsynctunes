@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
+using System.Threading;
 
 using iTunesLib;
 using PortableDeviceApiLib;
@@ -15,6 +16,8 @@ using WindowsPortableDevicesLib.Domain;
 using WindowsPortableDevicesLib;
 
 using AndroSyncTunes.Library;
+using AndroSyncTunes.Workers;
+using AndroSyncTunes.UI;
 
 namespace AndroSyncTunes {
     public partial class Main : Form {
@@ -35,7 +38,7 @@ namespace AndroSyncTunes {
         }
 
         private void Main_Load(object sender, EventArgs e) {
-
+            
         }
 
         private void refresh_devices_button_Click(object sender, EventArgs e) {
@@ -95,7 +98,7 @@ namespace AndroSyncTunes {
                     }
                 }
             }
-            updateTrackToSyncInfos();
+            updateTrackToSyncInfos(null, null);
             /*
             // Start syncing
             // Connect to device
@@ -121,7 +124,7 @@ namespace AndroSyncTunes {
             updateAlbumsCheckedList();
             updateArtistCheckedList();
             updatePlaylistsCheckedList();
-            updateTrackToSyncInfos();
+            updateTrackToSyncInfos(null, null);
         }
 
         private void updateArtistCheckedList() {
@@ -137,11 +140,9 @@ namespace AndroSyncTunes {
             foreach (IITPlaylist p in music_library.Playlists) playlists_checkedlist.Items.Add(p.Name);
         }
 
-        private void updateTrackToSyncInfos() {
-            track_to_sync_value_label.Text = music_library.TracksToSync.Count.ToString() + " track(s)";
-            size_to_sync_value_label.Text = Math.Round((music_library.TrackToSyncSize / 1000000.0), 2) + " MB";
-            track_to_sync_value_label.Refresh();
-            size_to_sync_label.Refresh();
+        private void updateTrackToSyncInfos(object sender, EventArgs e) {
+            ThreadSafeMethods.threadSafeLabelUpdate(track_to_sync_value_label, music_library.TracksToSync.Count.ToString() + " track(s)");
+            ThreadSafeMethods.threadSafeLabelUpdate(size_to_sync_value_label, Math.Round((music_library.TrackToSyncSize / 1000000.0), 2) + " MB");
         }
 
         private void artists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
@@ -167,8 +168,10 @@ namespace AndroSyncTunes {
         private void entire_library_radio_CheckedChanged(object sender, EventArgs e) {
             if (((RadioButton)sender).Checked == true) {
                 song_chooser_groupbox.Enabled = false;
-                music_library.addEntireLibraryToSync(sync_checked_checkbox.Checked);
-                updateTrackToSyncInfos();
+                //music_library.addEntireLibraryToSync(sync_checked_checkbox.Checked);
+                ItemsToSyncAdder i = new ItemsToSyncAdder(music_library, sync_checked_checkbox.Checked);
+                i.AddingFinished += updateTrackToSyncInfos;
+                new Thread(i.addEntireLibrary).Start();
             } else {
                 song_chooser_groupbox.Enabled = true;
             }
@@ -184,6 +187,11 @@ namespace AndroSyncTunes {
 
         private void search_playlist_placeholdertextbox_TextChanged(object sender, EventArgs e) {
             playlists_checkedlist.TopIndex = playlists_checkedlist.FindString(search_playlist_placeholdertextbox.Text);
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e) {
+            Settings settings_form = new Settings();
+            settings_form.ShowDialog();
         }
     }
 }

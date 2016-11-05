@@ -22,5 +22,17 @@ namespace AndroSyncTunes.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Music")]
+        public string device_music_folder {
+            get {
+                return ((string)(this["device_music_folder"]));
+            }
+            set {
+                this["device_music_folder"] = value;
+            }
+        }
     }
 }
