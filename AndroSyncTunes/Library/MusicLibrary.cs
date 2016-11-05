@@ -9,7 +9,7 @@ namespace AndroSyncTunes.Library {
     class MusicLibrary {
         public IList<Artist> Artists { get; }
         public IList<Album> Albums { get; }
-        public IITTrackCollection Tracks { get; }
+        public IList<IITTrack> Tracks { get; }
         public IList<IITPlaylist> Playlists { get; }
         public IList<IITTrack> TracksToSync { get; private set; }
         public long TrackToSyncSize { get; private set; }
@@ -24,15 +24,16 @@ namespace AndroSyncTunes.Library {
                 Playlists.Add(o_itunes.LibrarySource.Playlists[i]);
             }
             // We select only the Music playlist here
-            this.Tracks = o_itunes.LibrarySource.Playlists.ItemByName["Music"].Tracks;
+            this.Tracks = new List<IITTrack>();
             this.Albums = new List<Album>();
             this.Artists = new List<Artist>();
             this.TrackToSyncSize = 0;
-            foreach (IITTrack track in Tracks) {
-                // We skip not downloaded songs here
-                if (!(track is IITFileOrCDTrack)) continue;
+            foreach (IITTrack track in o_itunes.LibrarySource.Playlists.ItemByName["Music"].Tracks) {
+                // We skip not downloaded songs here or missing song that could throw exception
+                if (!(track is IITFileOrCDTrack) || ((IITFileOrCDTrack)track).Location == null || track.KindAsString == "iTunes LP") continue;
                 Artist artist = addArtist(track.Artist == null ? Resources.GlobalStrings.unknown : track.Artist);
                 Album album = addAlbum(track.Album == null ? Resources.GlobalStrings.unknown : track.Album);
+                Tracks.Add(track);
                 artist.addAlbum(album);
                 album.addTrack(track);
             }

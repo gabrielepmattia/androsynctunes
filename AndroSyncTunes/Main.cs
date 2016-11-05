@@ -38,7 +38,7 @@ namespace AndroSyncTunes {
         }
 
         private void Main_Load(object sender, EventArgs e) {
-            
+
         }
 
         private void refresh_devices_button_Click(object sender, EventArgs e) {
@@ -192,6 +192,18 @@ namespace AndroSyncTunes {
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e) {
             Settings settings_form = new Settings();
             settings_form.ShowDialog();
+        }
+        // 
+
+        private void uiBusyStart() {
+            progressBar1.Enabled = true;
+            progressBar1.Style = ProgressBarStyle.Marquee;
+            sync_button.Enabled = false;
+        }
+        private void uiBusyStop() {
+            progressBar1.Style = ProgressBarStyle.Blocks;
+            progressBar1.Enabled = false;
+            sync_button.Enabled = true;
         }
     }
 }
