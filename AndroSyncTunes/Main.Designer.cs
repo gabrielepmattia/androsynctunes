@@ -72,9 +72,6 @@ namespace AndroSyncTunes {
             this.size_to_sync_label = new System.Windows.Forms.Label();
             this.track_to_sync_value_label = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.search_playlist_placeholdertextbox = new AndroSyncTunes.UI.PlaceHolderTextBox();
-            this.search_album_placeholdertextbox = new AndroSyncTunes.UI.PlaceHolderTextBox();
-            this.search_artist_placeholdertextbox = new AndroSyncTunes.UI.PlaceHolderTextBox();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.select_device_groupbox.SuspendLayout();
