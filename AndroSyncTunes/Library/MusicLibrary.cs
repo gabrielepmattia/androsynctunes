@@ -12,6 +12,7 @@ namespace AndroSyncTunes.Library {
         public IITTrackCollection Tracks { get; }
         public IList<IITPlaylist> Playlists { get; }
         public IList<IITTrack> TracksToSync { get; private set; }
+        public long TrackToSyncSize { get; private set; }
 
         public MusicLibrary() {
             iTunesApp o_itunes = new iTunesApp();
@@ -25,6 +26,7 @@ namespace AndroSyncTunes.Library {
             this.Tracks = o_itunes.LibrarySource.Playlists.ItemByName["Music"].Tracks;
             this.Albums = new List<Album>();
             this.Artists = new List<Artist>();
+            this.TrackToSyncSize = 0;
             foreach (IITTrack track in Tracks) {
                 // We skip not downloaded songs here
                 if (!(track is IITFileOrCDTrack)) continue;
@@ -53,15 +55,27 @@ namespace AndroSyncTunes.Library {
         public void addTrackToSync(IITTrack track) {
             // We skip not downloaded songs here
             if (!(track is IITFileOrCDTrack)) return;
-            if (!TracksToSync.Contains(track)) this.TracksToSync.Add(track);
+            if (!TracksToSync.Contains(track)) {
+                this.TracksToSync.Add(track);
+                TrackToSyncSize += new System.IO.FileInfo(((IITFileOrCDTrack)track).Location).Length;
+            }
         }
 
         public void clearTracksToSync() {
             TracksToSync = null;
             TracksToSync = new List<IITTrack>();
+            TrackToSyncSize = 0;
+        }
+        // Bulk methods
+        public void addEntireLibraryToSync(bool only_checked) {
+            clearTracksToSync();
+            foreach (IITTrack track in Tracks) {
+                // Check if only checked is checked
+                if ((only_checked && track.Enabled) || !only_checked) addTrackToSync(track);
+            }
         }
 
-        // Debugging
+        // Debugging methods
         public void logAlbums() {
             int i = 0;
             foreach (Album a in Albums) {

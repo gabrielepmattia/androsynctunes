@@ -26,33 +26,10 @@ namespace AndroSyncTunes {
 
         public Main() {
             InitializeComponent();
-            /*
-            // Initialize global variables
-            this.o_iTunes = new iTunesApp();
-            List<String> library_albums = new List<String>();
-            List<String> library_artists = new List<String>();
-            this.tracks_to_sync = new List<IITTrack>();
-            // Get the library
-            IITLibraryPlaylist itunes_library_playlist = o_iTunes.LibraryPlaylist;
-            // Generate Albums and Artist lists
-            foreach (IITTrack track in itunes_library_playlist.Tracks) {
-                //Console.WriteLine(track.Name);
-                //Console.WriteLine("\tplaylistID::" + track.playlistID);
-                //Console.WriteLine("\tsourceID::" + track.sourceID);
-                //Console.WriteLine("\ttrackID::" + track.trackID);
-                //Console.WriteLine("\tTrackDatabaseID::" + track.TrackDatabaseID);
-                //Console.WriteLine("\tEnabled::" + track.Enabled);
-                if (!library_albums.Contains(track.Album)) library_albums.Add(track.Album);
-                if (!library_artists.Contains(track.Artist)) library_artists.Add(track.Artist);
-            }
-            this.library = new MusicLibrary(library_albums, library_artists, o_iTunes.LibrarySource.Playlists);
-
-            */
             // Instantiate the devices
             this.devices = new Devices();
             // Instantiate the libraries
             this.music_library = new MusicLibrary();
-
             // Update the GUI with the gathered informations
             loadLibraryDataInGUI();
         }
@@ -64,25 +41,6 @@ namespace AndroSyncTunes {
         private void refresh_devices_button_Click(object sender, EventArgs e) {
             device_list_combobox.Items.Clear();
             device_storage_list_combobox.Items.Clear();
-            /*
-            StandardWindowsPortableDeviceService devices_service = new StandardWindowsPortableDeviceService();
-            IList<WindowsPortableDevice> devices = devices_service.Devices;
-
-            if (devices.Count == 0) {
-
-            } else {
-                int i = 0;
-                foreach (WindowsPortableDevice device in devices) {
-                    device.Connect();
-                    device_list_combobox.Items.Insert(i++, device.DeviceModel);
-                    PortableDeviceFolder device_contents = device.GetContents();
-                    foreach (PortableDeviceFolder item in device_contents.Files) {
-                        device_storage_list_combobox.Items.Add(item.Name);
-                    }
-                    device.Disconnect();
-                }
-            }
-            */
 
             this.devices = new Devices();
             Console.WriteLine("============== DEVICES DEBUG ====================");
@@ -103,7 +61,7 @@ namespace AndroSyncTunes {
         }
 
         private void sync_button_Click(object sender, EventArgs e) {
-            music_library.TracksToSync.Clear();
+            music_library.clearTracksToSync();
             toolStripStatusLabel2.Text = "Gathering songs...";
             // Calculate the tracks to sync
             // Check if entire library is selected
@@ -137,8 +95,7 @@ namespace AndroSyncTunes {
                     }
                 }
             }
-            label1.Text = music_library.TracksToSync.Count.ToString();
-            label1.Refresh();
+            updateTrackToSyncInfos();
             /*
             // Start syncing
             // Connect to device
@@ -164,6 +121,7 @@ namespace AndroSyncTunes {
             updateAlbumsCheckedList();
             updateArtistCheckedList();
             updatePlaylistsCheckedList();
+            updateTrackToSyncInfos();
         }
 
         private void updateArtistCheckedList() {
@@ -179,10 +137,21 @@ namespace AndroSyncTunes {
             foreach (IITPlaylist p in music_library.Playlists) playlists_checkedlist.Items.Add(p.Name);
         }
 
-        private void artists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
-            this.BeginInvoke((MethodInvoker)(
-            () => checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString() + " " + AndroSyncTunes.Resources.GlobalStrings.checked_items));
+        private void updateTrackToSyncInfos() {
+            track_to_sync_value_label.Text = music_library.TracksToSync.Count.ToString() + " track(s)";
+            size_to_sync_value_label.Text = Math.Round((music_library.TrackToSyncSize / 1000000.0), 2) + " MB";
+            track_to_sync_value_label.Refresh();
+            size_to_sync_label.Refresh();
+        }
 
+        private void artists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
+            this.BeginInvoke((MethodInvoker)(() =>
+            checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString() + " " + AndroSyncTunes.Resources.GlobalStrings.checked_items));
+
+            this.BeginInvoke((MethodInvoker)(() => {
+                //checked_artists_label.Text = "";
+            }
+            ));
         }
 
         private void albums_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
@@ -196,8 +165,13 @@ namespace AndroSyncTunes {
         }
 
         private void entire_library_radio_CheckedChanged(object sender, EventArgs e) {
-            if (((RadioButton)sender).Checked == true) song_chooser_groupbox.Enabled = false;
-            else song_chooser_groupbox.Enabled = true;
+            if (((RadioButton)sender).Checked == true) {
+                song_chooser_groupbox.Enabled = false;
+                music_library.addEntireLibraryToSync(sync_checked_checkbox.Checked);
+                updateTrackToSyncInfos();
+            } else {
+                song_chooser_groupbox.Enabled = true;
+            }
         }
 
         private void search_artist_placeholdertextbox_TextChanged(object sender, EventArgs e) {

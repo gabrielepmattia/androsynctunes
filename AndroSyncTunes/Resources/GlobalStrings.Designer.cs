@@ -70,6 +70,15 @@ namespace AndroSyncTunes.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to track(s).
+        /// </summary>
+        internal static string tracks {
+            get {
+                return ResourceManager.GetString("tracks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown.
         /// </summary>
         internal static string unknown {
