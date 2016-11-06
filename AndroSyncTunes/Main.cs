@@ -164,7 +164,7 @@ namespace AndroSyncTunes {
                 checked_playlist_label.Text = playlists_checkedlist.CheckedItems.Count.ToString() + " " + AndroSyncTunes.Resources.GlobalStrings.checked_items;
                 ItemsToSyncAdder i = new ItemsToSyncAdder(music_library, ItemsToSyncAdder.WorkKindType.addAllTracksFromPlaylist, sync_checked_checkbox.Checked, e.Index);
                 addingJobStarted(i);
-                ThreadSafeMethods.threadSafeToolStripStatusLabelUpdate(statusStrip1, Resources.GlobalStrings.adding_items_from + " " + albums_checkedlist.Items[e.Index].ToString() + "...");
+                ThreadSafeMethods.threadSafeToolStripStatusLabelUpdate(statusStrip1, Resources.GlobalStrings.adding_items_from + " " + playlists_checkedlist.Items[e.Index].ToString() + "...");
             }));
         }
 
