@@ -14,13 +14,14 @@ namespace AndroSyncTunes.Library {
         public IList<IITTrack> TracksToSync { get; private set; }
         public long TrackToSyncSize { get; private set; }
         private object TracksToSyncLocker = new object();
+        private int PLAYLIST_SHIFT = 13;
 
         public MusicLibrary() {
             iTunesApp o_itunes = new iTunesApp();
             this.Playlists = new List<IITPlaylist>();
             this.TracksToSync = new List<IITTrack>();
             // We remove not-music playlist here
-            for (int i = 13; i < o_itunes.LibrarySource.Playlists.Count; i++) {
+            for (int i = PLAYLIST_SHIFT; i < o_itunes.LibrarySource.Playlists.Count; i++) {
                 Playlists.Add(o_itunes.LibrarySource.Playlists[i]);
             }
             // We select only the Music playlist here
@@ -66,9 +67,11 @@ namespace AndroSyncTunes.Library {
         }
 
         public void clearTracksToSync() {
-            TracksToSync = null;
-            TracksToSync = new List<IITTrack>();
-            TrackToSyncSize = 0;
+            lock (TracksToSyncLocker) {
+                TracksToSync = null;
+                TracksToSync = new List<IITTrack>();
+                TrackToSyncSize = 0;
+            }
         }
         // Bulk methods
         public void addEntireLibraryToSync(bool only_checked) {
@@ -76,6 +79,28 @@ namespace AndroSyncTunes.Library {
             foreach (IITTrack track in Tracks) {
                 // Check if only checked is checked
                 if ((only_checked && track.Enabled) || !only_checked) addTrackToSync(track);
+            }      
+        }
+
+        public void addArtistToSync(int artist_i, bool only_checked) {
+            foreach (Album album in Artists.ElementAt(artist_i).Albums) {
+                foreach (IITTrack track in album.Tracks) {
+                    if (only_checked && !track.Enabled) continue;
+                    addTrackToSync(track);
+                }
+            }
+        }
+
+        public void addAlbumToSync(int album_i, bool only_checked) {
+            foreach (IITTrack track in Albums.ElementAt(album_i).Tracks) {
+                if (only_checked && !track.Enabled) continue;
+                addTrackToSync(track);
+            }
+        }
+
+        public void addPlaylistToSync(int playlist_i, bool only_checked) {
+            foreach (IITTrack track in Playlists.ElementAt(playlist_i).Tracks) {
+                if ((only_checked && track.Enabled) || only_checked == false) addTrackToSync(track);
             }
         }
 

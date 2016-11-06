@@ -33,16 +33,13 @@ namespace AndroSyncTunes {
             this.free_label = new System.Windows.Forms.Label();
             this.device_storage_list_combobox = new System.Windows.Forms.ComboBox();
             this.choose_sync_groupbox = new System.Windows.Forms.GroupBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.select_items_sync_radio = new System.Windows.Forms.RadioButton();
             this.entire_library_radio = new System.Windows.Forms.RadioButton();
             this.song_chooser_groupbox = new System.Windows.Forms.GroupBox();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.music_tabPage = new System.Windows.Forms.TabPage();
-            this.search_playlist_placeholdertextbox = new AndroSyncTunes.UI.PlaceHolderTextBox();
             this.artists_checkedlist = new System.Windows.Forms.CheckedListBox();
-            this.search_album_placeholdertextbox = new AndroSyncTunes.UI.PlaceHolderTextBox();
             this.artists_for_list_label = new System.Windows.Forms.Label();
-            this.search_artist_placeholdertextbox = new AndroSyncTunes.UI.PlaceHolderTextBox();
             this.albums_checkedlist = new System.Windows.Forms.CheckedListBox();
             this.checked_playlist_label = new System.Windows.Forms.Label();
             this.albums_for_list_label = new System.Windows.Forms.Label();
@@ -59,10 +56,12 @@ namespace AndroSyncTunes {
             this.sync_mvideo_checkbox = new System.Windows.Forms.CheckBox();
             this.sync_memo_checkboa = new System.Windows.Forms.CheckBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusbar_label = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.file_toolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.instructionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,8 +71,9 @@ namespace AndroSyncTunes {
             this.size_to_sync_label = new System.Windows.Forms.Label();
             this.track_to_sync_value_label = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.search_playlist_placeholdertextbox = new AndroSyncTunes.UI.PlaceHolderTextBox();
+            this.search_album_placeholdertextbox = new AndroSyncTunes.UI.PlaceHolderTextBox();
+            this.search_artist_placeholdertextbox = new AndroSyncTunes.UI.PlaceHolderTextBox();
             this.select_device_groupbox.SuspendLayout();
             this.choose_sync_groupbox.SuspendLayout();
             this.song_chooser_groupbox.SuspendLayout();
@@ -149,7 +149,7 @@ namespace AndroSyncTunes {
             // 
             // choose_sync_groupbox
             // 
-            this.choose_sync_groupbox.Controls.Add(this.radioButton1);
+            this.choose_sync_groupbox.Controls.Add(this.select_items_sync_radio);
             this.choose_sync_groupbox.Controls.Add(this.entire_library_radio);
             this.choose_sync_groupbox.Location = new System.Drawing.Point(12, 107);
             this.choose_sync_groupbox.Name = "choose_sync_groupbox";
@@ -158,15 +158,16 @@ namespace AndroSyncTunes {
             this.choose_sync_groupbox.TabStop = false;
             this.choose_sync_groupbox.Text = "2. Choose what to sync";
             // 
-            // radioButton1
+            // select_items_sync_radio
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(6, 35);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(119, 17);
-            this.radioButton1.TabIndex = 5;
-            this.radioButton1.Text = "Select items to sync";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.select_items_sync_radio.AutoSize = true;
+            this.select_items_sync_radio.Location = new System.Drawing.Point(6, 35);
+            this.select_items_sync_radio.Name = "select_items_sync_radio";
+            this.select_items_sync_radio.Size = new System.Drawing.Size(119, 17);
+            this.select_items_sync_radio.TabIndex = 5;
+            this.select_items_sync_radio.Text = "Select items to sync";
+            this.select_items_sync_radio.UseVisualStyleBackColor = true;
+            this.select_items_sync_radio.CheckedChanged += new System.EventHandler(this.select_items_sync_radio_CheckedChanged);
             // 
             // entire_library_radio
             // 
@@ -223,18 +224,6 @@ namespace AndroSyncTunes {
             this.music_tabPage.Text = "Music";
             this.music_tabPage.UseVisualStyleBackColor = true;
             // 
-            // search_playlist_placeholdertextbox
-            // 
-            this.search_playlist_placeholdertextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.search_playlist_placeholdertextbox.ForeColor = System.Drawing.Color.Gray;
-            this.search_playlist_placeholdertextbox.Location = new System.Drawing.Point(394, 20);
-            this.search_playlist_placeholdertextbox.Name = "search_playlist_placeholdertextbox";
-            this.search_playlist_placeholdertextbox.PlaceHolderText = "Search for playlists...";
-            this.search_playlist_placeholdertextbox.Size = new System.Drawing.Size(188, 20);
-            this.search_playlist_placeholdertextbox.TabIndex = 11;
-            this.search_playlist_placeholdertextbox.Text = "Search for playlists...";
-            this.search_playlist_placeholdertextbox.TextChanged += new System.EventHandler(this.search_playlist_placeholdertextbox_TextChanged);
-            // 
             // artists_checkedlist
             // 
             this.artists_checkedlist.FormattingEnabled = true;
@@ -243,18 +232,6 @@ namespace AndroSyncTunes {
             this.artists_checkedlist.Size = new System.Drawing.Size(188, 199);
             this.artists_checkedlist.TabIndex = 0;
             this.artists_checkedlist.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.artists_checkedlist_ItemCheck);
-            // 
-            // search_album_placeholdertextbox
-            // 
-            this.search_album_placeholdertextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.search_album_placeholdertextbox.ForeColor = System.Drawing.Color.Gray;
-            this.search_album_placeholdertextbox.Location = new System.Drawing.Point(200, 20);
-            this.search_album_placeholdertextbox.Name = "search_album_placeholdertextbox";
-            this.search_album_placeholdertextbox.PlaceHolderText = "Search for albums...";
-            this.search_album_placeholdertextbox.Size = new System.Drawing.Size(188, 20);
-            this.search_album_placeholdertextbox.TabIndex = 11;
-            this.search_album_placeholdertextbox.Text = "Search for albums...";
-            this.search_album_placeholdertextbox.TextChanged += new System.EventHandler(this.search_album_placeholdertextbox_TextChanged);
             // 
             // artists_for_list_label
             // 
@@ -265,18 +242,6 @@ namespace AndroSyncTunes {
             this.artists_for_list_label.Size = new System.Drawing.Size(40, 12);
             this.artists_for_list_label.TabIndex = 2;
             this.artists_for_list_label.Text = "Artists";
-            // 
-            // search_artist_placeholdertextbox
-            // 
-            this.search_artist_placeholdertextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.search_artist_placeholdertextbox.ForeColor = System.Drawing.Color.Gray;
-            this.search_artist_placeholdertextbox.Location = new System.Drawing.Point(6, 20);
-            this.search_artist_placeholdertextbox.Name = "search_artist_placeholdertextbox";
-            this.search_artist_placeholdertextbox.PlaceHolderText = "Search for artists..";
-            this.search_artist_placeholdertextbox.Size = new System.Drawing.Size(188, 20);
-            this.search_artist_placeholdertextbox.TabIndex = 12;
-            this.search_artist_placeholdertextbox.Text = "Search for artists...";
-            this.search_artist_placeholdertextbox.TextChanged += new System.EventHandler(this.search_artist_placeholdertextbox_TextChanged);
             // 
             // albums_checkedlist
             // 
@@ -430,19 +395,19 @@ namespace AndroSyncTunes {
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel2});
+            this.statusbar_label});
             this.statusStrip1.Location = new System.Drawing.Point(0, 349);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(898, 22);
             this.statusStrip1.TabIndex = 10;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // toolStripStatusLabel2
+            // statusbar_label
             // 
-            this.toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(41, 17);
-            this.toolStripStatusLabel2.Text = "Ready!";
+            this.statusbar_label.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.statusbar_label.Name = "statusbar_label";
+            this.statusbar_label.Size = new System.Drawing.Size(41, 17);
+            this.statusbar_label.Text = "Ready!";
             // 
             // toolStrip1
             // 
@@ -475,9 +440,20 @@ namespace AndroSyncTunes {
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.settingsToolStripMenuItem.Text = "&Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(113, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.exitToolStripMenuItem.Text = "&Exit";
             // 
             // toolStripSeparator1
             // 
@@ -500,13 +476,13 @@ namespace AndroSyncTunes {
             // instructionsToolStripMenuItem
             // 
             this.instructionsToolStripMenuItem.Name = "instructionsToolStripMenuItem";
-            this.instructionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.instructionsToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.instructionsToolStripMenuItem.Text = "&Instructions";
             // 
             // creditsToolStripMenuItem
             // 
             this.creditsToolStripMenuItem.Name = "creditsToolStripMenuItem";
-            this.creditsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.creditsToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.creditsToolStripMenuItem.Text = "&Credits";
             // 
             // sync_report_groupbox
@@ -553,6 +529,7 @@ namespace AndroSyncTunes {
             // progressBar1
             // 
             this.progressBar1.Location = new System.Drawing.Point(12, 336);
+            this.progressBar1.MarqueeAnimationSpeed = 10;
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(877, 10);
             this.progressBar1.TabIndex = 13;
@@ -583,39 +560,15 @@ namespace AndroSyncTunes {
             // 
             // search_artist_placeholdertextbox
             // 
-            this.size_to_sync_value_label.Location = new System.Drawing.Point(92, 42);
-            this.size_to_sync_value_label.Name = "size_to_sync_value_label";
-            this.size_to_sync_value_label.Size = new System.Drawing.Size(159, 13);
-            this.size_to_sync_value_label.TabIndex = 16;
-            this.size_to_sync_value_label.Text = "0";
-            this.size_to_sync_value_label.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exitToolStripMenuItem.Text = "&Exit";
-            // track_to_sync_value_label
-            // 
-            this.track_to_sync_value_label.Location = new System.Drawing.Point(92, 29);
-            this.track_to_sync_value_label.Name = "track_to_sync_value_label";
-            this.track_to_sync_value_label.Size = new System.Drawing.Size(159, 13);
-            this.track_to_sync_value_label.TabIndex = 14;
-            this.track_to_sync_value_label.Text = "0";
-            this.track_to_sync_value_label.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 336);
-            this.progressBar1.MarqueeAnimationSpeed = 10;
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(877, 10);
-            this.progressBar1.TabIndex = 13;
+            this.search_artist_placeholdertextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.search_artist_placeholdertextbox.ForeColor = System.Drawing.Color.Gray;
+            this.search_artist_placeholdertextbox.Location = new System.Drawing.Point(6, 20);
+            this.search_artist_placeholdertextbox.Name = "search_artist_placeholdertextbox";
+            this.search_artist_placeholdertextbox.PlaceHolderText = "Search for artists..";
+            this.search_artist_placeholdertextbox.Size = new System.Drawing.Size(188, 20);
+            this.search_artist_placeholdertextbox.TabIndex = 12;
+            this.search_artist_placeholdertextbox.Text = "Search for artists...";
+            this.search_artist_placeholdertextbox.TextChanged += new System.EventHandler(this.search_artist_placeholdertextbox_TextChanged);
             // 
             // Main
             // 
@@ -662,7 +615,7 @@ namespace AndroSyncTunes {
         private System.Windows.Forms.GroupBox select_device_groupbox;
         private System.Windows.Forms.ComboBox device_storage_list_combobox;
         private System.Windows.Forms.GroupBox choose_sync_groupbox;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton select_items_sync_radio;
         private System.Windows.Forms.RadioButton entire_library_radio;
         private System.Windows.Forms.GroupBox song_chooser_groupbox;
         private System.Windows.Forms.Label artists_for_list_label;
@@ -685,7 +638,7 @@ namespace AndroSyncTunes {
         private System.Windows.Forms.CheckBox sync_mvideo_checkbox;
         private System.Windows.Forms.CheckBox sync_memo_checkboa;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.ToolStripStatusLabel statusbar_label;
         private UI.PlaceHolderTextBox search_artist_placeholdertextbox;
         private UI.PlaceHolderTextBox search_album_placeholdertextbox;
         private UI.PlaceHolderTextBox search_playlist_placeholdertextbox;

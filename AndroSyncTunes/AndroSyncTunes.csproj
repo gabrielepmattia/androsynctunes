@@ -104,6 +104,7 @@
     </Compile>
     <Compile Include="UI\ThreadSafeMethods.cs" />
     <Compile Include="Workers\ItemsToSyncAdder.cs" />
+    <Compile Include="Workers\IWorker.cs" />
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
       <SubType>Designer</SubType>

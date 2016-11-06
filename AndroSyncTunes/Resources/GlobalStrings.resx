@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="adding_entire_library" xml:space="preserve">
+    <value>Adding entire library to syncing queue...</value>
+  </data>
+  <data name="adding_items_from" xml:space="preserve">
+    <value>Adding items from</value>
+  </data>
   <data name="checked_items" xml:space="preserve">
     <value>checked item(s)</value>
+  </data>
+  <data name="ready" xml:space="preserve">
+    <value>Ready!</value>
   </data>
   <data name="tracks" xml:space="preserve">
     <value>track(s)</value>

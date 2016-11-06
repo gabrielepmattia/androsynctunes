@@ -5,13 +5,47 @@ using System.Text;
 
 using AndroSyncTunes.Library;
 namespace AndroSyncTunes.Workers {
-    class ItemsToSyncAdder {
+
+    class ItemsToSyncAdder : IWorker {
+        public enum WorkKindType {
+            addEntireLibrary, addAllTracksFromArtist, addAllTracksFromAlbum, addAllTracksFromPlaylist
+        }
+
         private MusicLibrary MusicLibrary;
         private bool OnlyChecked;
+        private WorkKindType WorkKind;
+        private int Item;
         public event EventHandler AddingFinished;
-        public ItemsToSyncAdder(MusicLibrary l, bool only_checked) {
+        public ItemsToSyncAdder(MusicLibrary l, WorkKindType k, bool only_checked) {
             MusicLibrary = l;
             OnlyChecked = only_checked;
+            WorkKind = k;
+        }
+
+        public ItemsToSyncAdder(MusicLibrary l, WorkKindType k, bool only_checked, int item) {
+            MusicLibrary = l;
+            OnlyChecked = only_checked;
+            WorkKind = k;
+            Item = item;
+        }
+
+        public void DoWork() {
+            Console.WriteLine("==> Work Started");
+            switch (WorkKind) {
+                case WorkKindType.addEntireLibrary:
+                    addEntireLibrary();
+                    break;
+                case WorkKindType.addAllTracksFromArtist:
+                    addAllTracksFromArtist(Item);
+                    break;
+                case WorkKindType.addAllTracksFromAlbum:
+                    addAllTracksFromAlbum(Item);
+                    break;
+                case WorkKindType.addAllTracksFromPlaylist:
+                    addAllTracksFromPlaylist(Item);
+                    break;
+                default: throw new InvalidOperationException();
+            }
         }
 
         public void addEntireLibrary() {
@@ -19,14 +53,20 @@ namespace AndroSyncTunes.Workers {
             OnRaiseAddingFinished(new EventArgs());
         }
 
-        public void addAllTracksFromArtist(Artist a) {
-            MusicLibrary.addEntireLibraryToSync(OnlyChecked);
+        public void addAllTracksFromArtist(int artist_i) {
+            MusicLibrary.addArtistToSync(artist_i, OnlyChecked);
+            OnRaiseAddingFinished(new EventArgs());
         }
 
-        public void addAllTracksFromAlbum(Album a) {
-            MusicLibrary.addEntireLibraryToSync(OnlyChecked);
+        public void addAllTracksFromAlbum(int album_i) {
+            MusicLibrary.addAlbumToSync(album_i, OnlyChecked);
+            OnRaiseAddingFinished(new EventArgs());
         }
 
+        public void addAllTracksFromPlaylist(int playlist_i) {
+            MusicLibrary.addEntireLibraryToSync(OnlyChecked);
+            OnRaiseAddingFinished(new EventArgs());
+        }
         public void removeAllTracksFromArtist(Artist a) {
             MusicLibrary.addEntireLibraryToSync(OnlyChecked);
         }
@@ -53,4 +93,5 @@ namespace AndroSyncTunes.Workers {
             }
         }
     }
+
 }

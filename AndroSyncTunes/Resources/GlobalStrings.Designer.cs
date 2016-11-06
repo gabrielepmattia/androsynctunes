@@ -61,11 +61,38 @@ namespace AndroSyncTunes.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adding entire library to syncing queue....
+        /// </summary>
+        internal static string adding_entire_library {
+            get {
+                return ResourceManager.GetString("adding_entire_library", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding items from.
+        /// </summary>
+        internal static string adding_items_from {
+            get {
+                return ResourceManager.GetString("adding_items_from", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to checked item(s).
         /// </summary>
         internal static string checked_items {
             get {
                 return ResourceManager.GetString("checked_items", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ready!.
+        /// </summary>
+        internal static string ready {
+            get {
+                return ResourceManager.GetString("ready", resourceCulture);
             }
         }
         

@@ -183,6 +183,17 @@ namespace AndroSyncTunes.UI {
             }
         }
 
+        public static void threadSafeSetStyleProgessBar(ProgressBar progressBar, ProgressBarStyle style) {
+            if (progressBar.InvokeRequired) {
+                progressBar.BeginInvoke((MethodInvoker)delegate () {
+                    progressBar.Style = style;
+
+                });
+            } else {
+                progressBar.Style = style;
+            }
+        }
+
         public static void threadSafeEnableProgessBar(ProgressBar progressBar, bool enabled) {
             if (progressBar.InvokeRequired) {
                 progressBar.BeginInvoke((MethodInvoker)delegate () {
