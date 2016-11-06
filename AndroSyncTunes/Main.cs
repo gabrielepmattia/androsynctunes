@@ -146,18 +146,26 @@ namespace AndroSyncTunes {
                 checked_artists_label.Text = artists_checkedlist.CheckedItems.Count.ToString() + " " + AndroSyncTunes.Resources.GlobalStrings.checked_items;
                 ItemsToSyncAdder i = new ItemsToSyncAdder(music_library, ItemsToSyncAdder.WorkKindType.addAllTracksFromArtist, sync_checked_checkbox.Checked, e.Index);
                 addingJobStarted(i);
-                ThreadSafeMethods.threadSafeToolStripStatusLabelUpdate(statusStrip1, Resources.GlobalStrings.adding_items_from + artists_checkedlist.Items[e.Index].ToString() + "...");
+                ThreadSafeMethods.threadSafeToolStripStatusLabelUpdate(statusStrip1, Resources.GlobalStrings.adding_items_from + " " + artists_checkedlist.Items[e.Index].ToString() + "...");
             }));
         }
 
         private void albums_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
-            this.BeginInvoke((MethodInvoker)(
-            () => checked_albums_label.Text = albums_checkedlist.CheckedItems.Count.ToString() + " " + AndroSyncTunes.Resources.GlobalStrings.checked_items));
+            this.BeginInvoke((MethodInvoker)(() => {
+                checked_albums_label.Text = albums_checkedlist.CheckedItems.Count.ToString() + " " + AndroSyncTunes.Resources.GlobalStrings.checked_items;
+                ItemsToSyncAdder i = new ItemsToSyncAdder(music_library, ItemsToSyncAdder.WorkKindType.addAllTracksFromAlbum, sync_checked_checkbox.Checked, e.Index);
+                addingJobStarted(i);
+                ThreadSafeMethods.threadSafeToolStripStatusLabelUpdate(statusStrip1, Resources.GlobalStrings.adding_items_from + " " + albums_checkedlist.Items[e.Index].ToString() + "...");
+            }));
         }
 
         private void playlists_checkedlist_ItemCheck(object sender, ItemCheckEventArgs e) {
-            this.BeginInvoke((MethodInvoker)(
-            () => checked_playlist_label.Text = playlists_checkedlist.CheckedItems.Count.ToString() + " " + AndroSyncTunes.Resources.GlobalStrings.checked_items));
+            this.BeginInvoke((MethodInvoker)(() => {
+                checked_playlist_label.Text = playlists_checkedlist.CheckedItems.Count.ToString() + " " + AndroSyncTunes.Resources.GlobalStrings.checked_items;
+                ItemsToSyncAdder i = new ItemsToSyncAdder(music_library, ItemsToSyncAdder.WorkKindType.addAllTracksFromPlaylist, sync_checked_checkbox.Checked, e.Index);
+                addingJobStarted(i);
+                ThreadSafeMethods.threadSafeToolStripStatusLabelUpdate(statusStrip1, Resources.GlobalStrings.adding_items_from + " " + albums_checkedlist.Items[e.Index].ToString() + "...");
+            }));
         }
 
         private void entire_library_radio_CheckedChanged(object sender, EventArgs e) {
